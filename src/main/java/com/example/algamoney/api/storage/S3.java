@@ -1,4 +1,4 @@
-package com.example.algamoney.api.storage;
+/*package com.example.algamoney.api.storage;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -104,3 +104,4 @@ public class S3 {
 
 
 }
+*/

@@ -1,4 +1,4 @@
-package com.example.algamoney.api.repository.listener;
+/*package com.example.algamoney.api.repository.listener;
 
 import javax.persistence.PostLoad;
 
@@ -19,3 +19,4 @@ public class LancamentoAnexoListener {
 	}
 
 }
+*/

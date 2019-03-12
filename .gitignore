@@ -1,3 +1,13 @@
+# Eclipse IDE
+.settings/
+.classpath
+.project
+
+# Other
+target/
+.factorypath
+.jasper
+
 # Compiled class file
 *.class
 

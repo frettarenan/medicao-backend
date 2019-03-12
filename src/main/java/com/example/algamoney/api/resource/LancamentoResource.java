@@ -45,7 +45,7 @@ import com.example.algamoney.api.repository.filter.LancamentoFilter;
 import com.example.algamoney.api.repository.projection.ResumoLancamento;
 import com.example.algamoney.api.service.LancamentoService;
 import com.example.algamoney.api.service.exception.PessoaInexistenteOuInativaException;
-import com.example.algamoney.api.storage.S3;
+//import com.example.algamoney.api.storage.S3;
 
 @RestController
 @RequestMapping("/lancamentos")
@@ -63,14 +63,15 @@ public class LancamentoResource {
 	@Autowired
 	private MessageSource messageSource;
 	
-	@Autowired
-	private S3 s3;
+//	@Autowired
+//	private S3 s3;
 	
 	@PostMapping("/anexo")
 	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_LANCAMENTO') and #oauth2.hasScope('write')")
 	public Anexo uploadAnexo(@RequestParam MultipartFile anexo) throws IOException {
-		String nome = s3.salvarTemporariamente(anexo);
-		return new Anexo(nome, s3.configurarUrl(nome));
+//		String nome = s3.salvarTemporariamente(anexo);
+//		return new Anexo(nome, s3.configurarUrl(nome));
+		return null;
 	}
 	
 	@GetMapping("/relatorios/por-pessoa")
