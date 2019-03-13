@@ -7,7 +7,8 @@ CREATE TABLE usuario (
 
 CREATE TABLE permissao (
 	codigo BIGINT(20) PRIMARY KEY,
-	descricao VARCHAR(50) NOT NULL
+	chave VARCHAR(50) NOT NULL,
+	descricao VARCHAR(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE usuario_permissao (
@@ -21,16 +22,16 @@ CREATE TABLE usuario_permissao (
 INSERT INTO usuario (codigo, nome, email, senha) values (1, 'Administrador', 'admin@projetomedicao.com.br', '$2a$10$X607ZPhQ4EgGNaYKt3n4SONjIv9zc.VMWdEuhCuba7oLAL5IvcL5.');
 INSERT INTO usuario (codigo, nome, email, senha) values (2, 'Maria Silva', 'maria@projetomedicao.com.br', '$2a$10$Zc3w6HyuPOPXamaMhh.PQOXvDnEsadztbfi6/RyZWJDzimE8WQjaq');
 
-INSERT INTO permissao (codigo, descricao) values (1, 'ROLE_CADASTRAR_CATEGORIA');
-INSERT INTO permissao (codigo, descricao) values (2, 'ROLE_PESQUISAR_CATEGORIA');
+INSERT INTO permissao (codigo, chave, descricao) values (1, 'ROLE_CADASTRAR_CATEGORIA', 'Permissão para cadastrar categorias');
+INSERT INTO permissao (codigo, chave, descricao) values (2, 'ROLE_PESQUISAR_CATEGORIA', 'Permissão para pesquisar categorias');
 
-INSERT INTO permissao (codigo, descricao) values (3, 'ROLE_CADASTRAR_PESSOA');
-INSERT INTO permissao (codigo, descricao) values (4, 'ROLE_REMOVER_PESSOA');
-INSERT INTO permissao (codigo, descricao) values (5, 'ROLE_PESQUISAR_PESSOA');
+INSERT INTO permissao (codigo, chave, descricao) values (3, 'ROLE_CADASTRAR_PESSOA', 'Permissão para cadastrar pessoas');
+INSERT INTO permissao (codigo, chave, descricao) values (4, 'ROLE_REMOVER_PESSOA', 'Permissão para remover pessoas');
+INSERT INTO permissao (codigo, chave, descricao) values (5, 'ROLE_PESQUISAR_PESSOA', 'Permissão para pesquisar pessoas');
 
-INSERT INTO permissao (codigo, descricao) values (6, 'ROLE_CADASTRAR_LANCAMENTO');
-INSERT INTO permissao (codigo, descricao) values (7, 'ROLE_REMOVER_LANCAMENTO');
-INSERT INTO permissao (codigo, descricao) values (8, 'ROLE_PESQUISAR_LANCAMENTO');
+INSERT INTO permissao (codigo, chave, descricao) values (6, 'ROLE_CADASTRAR_LANCAMENTO', 'Permissão para cadastrar lançamentos');
+INSERT INTO permissao (codigo, chave, descricao) values (7, 'ROLE_REMOVER_LANCAMENTO', 'Permissão para remover lançamentos');
+INSERT INTO permissao (codigo, chave, descricao) values (8, 'ROLE_PESQUISAR_LANCAMENTO', 'Permissão para pesquisar lançamentos');
 
 -- admin
 INSERT INTO usuario_permissao (codigo_usuario, codigo_permissao) values (1, 1);
