@@ -111,22 +111,22 @@ public class LancamentoService {
 	}
 
 	public Lancamento atualizar(Long id, Lancamento lancamento) {
-		Lancamento lancamentoSalvo = buscarLancamentoExistente(id);
-		if (!lancamento.getPessoa().equals(lancamentoSalvo.getPessoa())) {
+		Lancamento lancamentoBD = buscarLancamentoExistente(id);
+		if (!lancamento.getPessoa().equals(lancamentoBD.getPessoa())) {
 			validarPessoa(lancamento);
 		}
 		
 //		if (StringUtils.isEmpty(lancamento.getAnexo())
-//				&& StringUtils.hasText(lancamentoSalvo.getAnexo())) {
-//			s3.remover(lancamentoSalvo.getAnexo());
+//				&& StringUtils.hasText(lancamentoBD.getAnexo())) {
+//			s3.remover(lancamentoBD.getAnexo());
 //		} else if (StringUtils.hasText(lancamento.getAnexo())
-//				&& !lancamento.getAnexo().equals(lancamentoSalvo.getAnexo())) {
-//			s3.substituir(lancamentoSalvo.getAnexo(), lancamento.getAnexo());
+//				&& !lancamento.getAnexo().equals(lancamentoBD.getAnexo())) {
+//			s3.substituir(lancamentoBD.getAnexo(), lancamento.getAnexo());
 //		}
 
-		BeanUtils.copyProperties(lancamento, lancamentoSalvo, "id");
+		BeanUtils.copyProperties(lancamento, lancamentoBD, "id");
 
-		return lancamentoRepository.save(lancamentoSalvo);
+		return lancamentoRepository.save(lancamentoBD);
 	}
 
 	private void validarPessoa(Lancamento lancamento) {
@@ -141,11 +141,11 @@ public class LancamentoService {
 	}
 
 	private Lancamento buscarLancamentoExistente(Long id) {
-		Optional<Lancamento> lancamentoSalvo = lancamentoRepository.findById(id);
-		if (!lancamentoSalvo.isPresent()) {
+		Optional<Lancamento> lancamentoBD = lancamentoRepository.findById(id);
+		if (!lancamentoBD.isPresent()) {
 			throw new IllegalArgumentException();
 		}
-		return lancamentoSalvo.get();
+		return lancamentoBD.get();
 	}
 
 }

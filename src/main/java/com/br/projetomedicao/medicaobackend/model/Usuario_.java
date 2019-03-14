@@ -9,11 +9,14 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(Usuario.class)
 public abstract class Usuario_ {
 
-	public static volatile SingularAttribute<Usuario, String> senha;
-	public static volatile ListAttribute<Usuario, Permissao> permissoes;
 	public static volatile SingularAttribute<Usuario, Long> id;
 	public static volatile SingularAttribute<Usuario, String> nome;
+	public static volatile SingularAttribute<Usuario, Construtora> construtora;
+	public static volatile SingularAttribute<Usuario, String> telefone;
 	public static volatile SingularAttribute<Usuario, String> email;
-
+	public static volatile SingularAttribute<Usuario, String> senha;
+	public static volatile SingularAttribute<Usuario, Boolean> ativo;
+	public static volatile SingularAttribute<Usuario, Boolean> administrador;
+	public static volatile ListAttribute<Usuario, Permissao> permissoes;
+	
 }
-

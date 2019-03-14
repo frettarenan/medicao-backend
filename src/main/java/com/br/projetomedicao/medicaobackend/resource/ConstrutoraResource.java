@@ -44,9 +44,9 @@ public class ConstrutoraResource {
 	@PostMapping
 	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_CONSTRUTORA') and #oauth2.hasScope('write')")
 	public ResponseEntity<Construtora> criar(@Valid @RequestBody Construtora construtora, HttpServletResponse response) {
-		Construtora construtoraSalva = construtoraService.salvar(construtora);
-		publisher.publishEvent(new RecursoCriadoEvent(this, response, construtoraSalva.getId()));
-		return ResponseEntity.status(HttpStatus.CREATED).body(construtoraSalva);
+		Construtora construtoraBD = construtoraService.salvar(construtora);
+		publisher.publishEvent(new RecursoCriadoEvent(this, response, construtoraBD.getId()));
+		return ResponseEntity.status(HttpStatus.CREATED).body(construtoraBD);
 	}
 
 	@GetMapping("/{id}")
@@ -66,8 +66,8 @@ public class ConstrutoraResource {
 	@PutMapping("/{id}")
 	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_CONSTRUTORA') and #oauth2.hasScope('write')")
 	public ResponseEntity<Construtora> atualizar(@PathVariable Long id, @Valid @RequestBody Construtora construtora) {
-		Construtora construtoraSalva = construtoraService.atualizar(id, construtora);
-		return ResponseEntity.ok(construtoraSalva);
+		Construtora construtoraBD = construtoraService.atualizar(id, construtora);
+		return ResponseEntity.ok(construtoraBD);
 	}
 	
 	@PutMapping("/{id}/ativo")

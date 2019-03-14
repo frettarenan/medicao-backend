@@ -44,9 +44,9 @@ public class PessoaResource {
 	@PostMapping
 	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_PESSOA') and #oauth2.hasScope('write')")
 	public ResponseEntity<Pessoa> criar(@Valid @RequestBody Pessoa pessoa, HttpServletResponse response) {
-		Pessoa pessoaSalva = pessoaService.salvar(pessoa);
-		publisher.publishEvent(new RecursoCriadoEvent(this, response, pessoaSalva.getId()));
-		return ResponseEntity.status(HttpStatus.CREATED).body(pessoaSalva);
+		Pessoa pessoaBD = pessoaService.salvar(pessoa);
+		publisher.publishEvent(new RecursoCriadoEvent(this, response, pessoaBD.getId()));
+		return ResponseEntity.status(HttpStatus.CREATED).body(pessoaBD);
 	}
 
 	@GetMapping("/{id}")
@@ -66,8 +66,8 @@ public class PessoaResource {
 	@PutMapping("/{id}")
 	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_PESSOA') and #oauth2.hasScope('write')")
 	public ResponseEntity<Pessoa> atualizar(@PathVariable Long id, @Valid @RequestBody Pessoa pessoa) {
-		Pessoa pessoaSalva = pessoaService.atualizar(id, pessoa);
-		return ResponseEntity.ok(pessoaSalva);
+		Pessoa pessoaBD = pessoaService.atualizar(id, pessoa);
+		return ResponseEntity.ok(pessoaBD);
 	}
 	
 	@PutMapping("/{id}/ativo")

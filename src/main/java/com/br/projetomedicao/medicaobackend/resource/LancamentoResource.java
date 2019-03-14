@@ -116,9 +116,9 @@ public class LancamentoResource {
 	@PostMapping
 	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_LANCAMENTO') and #oauth2.hasScope('write')")
 	public ResponseEntity<Lancamento> criar(@Valid @RequestBody Lancamento lancamento, HttpServletResponse response) {
-		Lancamento lancamentoSalvo = lancamentoService.salvar(lancamento);
-		publisher.publishEvent(new RecursoCriadoEvent(this, response, lancamentoSalvo.getId()));
-		return ResponseEntity.status(HttpStatus.CREATED).body(lancamentoSalvo);
+		Lancamento lancamentoBD = lancamentoService.salvar(lancamento);
+		publisher.publishEvent(new RecursoCriadoEvent(this, response, lancamentoBD.getId()));
+		return ResponseEntity.status(HttpStatus.CREATED).body(lancamentoBD);
 	}
 	
 	@ExceptionHandler({ PessoaInexistenteOuInativaException.class })
@@ -140,8 +140,8 @@ public class LancamentoResource {
 	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_LANCAMENTO')")
 	public ResponseEntity<Lancamento> atualizar(@PathVariable Long id, @Valid @RequestBody Lancamento lancamento) {
 		try {
-			Lancamento lancamentoSalvo = lancamentoService.atualizar(id, lancamento);
-			return ResponseEntity.ok(lancamentoSalvo);
+			Lancamento lancamentoBD = lancamentoService.atualizar(id, lancamento);
+			return ResponseEntity.ok(lancamentoBD);
 		} catch (IllegalArgumentException e) {
 			return ResponseEntity.notFound().build();
 		}

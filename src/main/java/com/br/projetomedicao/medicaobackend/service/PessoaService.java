@@ -22,28 +22,28 @@ public class PessoaService {
 	}
 
 	public Pessoa atualizar(Long id, Pessoa pessoa) {
-		Pessoa pessoaSalva = buscarPessoaPeloId(id);
+		Pessoa pessoaBD = buscarPessoaPeloId(id);
 		
-		pessoaSalva.getContatos().clear();
-		pessoaSalva.getContatos().addAll(pessoa.getContatos());
-		pessoaSalva.getContatos().forEach(c -> c.setPessoa(pessoaSalva));
+		pessoaBD.getContatos().clear();
+		pessoaBD.getContatos().addAll(pessoa.getContatos());
+		pessoaBD.getContatos().forEach(c -> c.setPessoa(pessoaBD));
 		
-		BeanUtils.copyProperties(pessoa, pessoaSalva, "id", "contatos");
-		return pessoaRepository.save(pessoaSalva);
+		BeanUtils.copyProperties(pessoa, pessoaBD, "id", "contatos");
+		return pessoaRepository.save(pessoaBD);
 	}
 
 	public void atualizarPropriedadeAtivo(Long id, Boolean ativo) {
-		Pessoa pessoaSalva = buscarPessoaPeloId(id);
-		pessoaSalva.setAtivo(ativo);
-		pessoaRepository.save(pessoaSalva);
+		Pessoa pessoaBD = buscarPessoaPeloId(id);
+		pessoaBD.setAtivo(ativo);
+		pessoaRepository.save(pessoaBD);
 	}
 	
 	public Pessoa buscarPessoaPeloId(Long id) {
-		Optional<Pessoa> pessoaSalva = pessoaRepository.findById(id);
-		if (!pessoaSalva.isPresent()) {
+		Optional<Pessoa> pessoaBD = pessoaRepository.findById(id);
+		if (!pessoaBD.isPresent()) {
 			throw new EmptyResultDataAccessException(1);
 		}
-		return pessoaSalva.get();
+		return pessoaBD.get();
 	}
 	
 }
