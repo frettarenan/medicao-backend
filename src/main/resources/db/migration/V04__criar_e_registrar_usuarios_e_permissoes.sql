@@ -33,6 +33,10 @@ INSERT INTO permissao (codigo, chave, descricao) values (6, 'ROLE_CADASTRAR_LANC
 INSERT INTO permissao (codigo, chave, descricao) values (7, 'ROLE_REMOVER_LANCAMENTO', 'Permissão para remover lançamentos');
 INSERT INTO permissao (codigo, chave, descricao) values (8, 'ROLE_PESQUISAR_LANCAMENTO', 'Permissão para pesquisar lançamentos');
 
+INSERT INTO permissao (codigo, chave, descricao) values (9, 'ROLE_CADASTRAR_CONSTRUTORA', 'Permissão para cadastrar construtoras');
+INSERT INTO permissao (codigo, chave, descricao) values (10, 'ROLE_REMOVER_CONSTRUTORA', 'Permissão para remover construtoras');
+INSERT INTO permissao (codigo, chave, descricao) values (11, 'ROLE_PESQUISAR_CONSTRUTORA', 'Permissão para pesquisar construtoras');
+
 -- admin
 INSERT INTO usuario_permissao (codigo_usuario, codigo_permissao) values (1, 1);
 INSERT INTO usuario_permissao (codigo_usuario, codigo_permissao) values (1, 2);
@@ -42,6 +46,9 @@ INSERT INTO usuario_permissao (codigo_usuario, codigo_permissao) values (1, 5);
 INSERT INTO usuario_permissao (codigo_usuario, codigo_permissao) values (1, 6);
 INSERT INTO usuario_permissao (codigo_usuario, codigo_permissao) values (1, 7);
 INSERT INTO usuario_permissao (codigo_usuario, codigo_permissao) values (1, 8);
+INSERT INTO usuario_permissao (codigo_usuario, codigo_permissao) values (1, 9);
+INSERT INTO usuario_permissao (codigo_usuario, codigo_permissao) values (1, 10);
+INSERT INTO usuario_permissao (codigo_usuario, codigo_permissao) values (1, 11);
 
 -- maria
 INSERT INTO usuario_permissao (codigo_usuario, codigo_permissao) values (2, 2);

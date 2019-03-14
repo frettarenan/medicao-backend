@@ -1,4 +1,4 @@
-package com.br.projetomedicao.medicaobackend.security.util;
+/*package com.br.projetomedicao.medicaobackend.security.util;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -9,4 +9,4 @@ public class GeradorSenha {
 		System.out.println(encoder.encode("m0b1l30"));
 	}
 	
-}
+}*/
