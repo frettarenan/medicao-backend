@@ -8,7 +8,7 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(Estado.class)
 public abstract class Estado_ {
 
-	public static volatile SingularAttribute<Estado, Long> codigo;
+	public static volatile SingularAttribute<Estado, Long> id;
 	public static volatile SingularAttribute<Estado, String> nome;
 
 }

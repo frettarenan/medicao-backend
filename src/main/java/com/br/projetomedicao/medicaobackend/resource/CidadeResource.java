@@ -21,8 +21,8 @@ public class CidadeResource {
 	
 	@GetMapping
 	@PreAuthorize("isAuthenticated()")
-	public List<Cidade> pesquisar(@RequestParam Long estado) {
-		return cidadeRepository.findByEstadoCodigo(estado);
+	public List<Cidade> pesquisar(@RequestParam Long idEstado) {
+		return cidadeRepository.findByEstadoId(idEstado);
 	}
 
 }

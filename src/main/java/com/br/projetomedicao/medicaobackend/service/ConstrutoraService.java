@@ -20,20 +20,20 @@ public class ConstrutoraService {
 		return construtoraRepository.save(construtora);
 	}
 
-	public Construtora atualizar(Long codigo, Construtora construtora) {
-		Construtora construtoraSalva = buscarConstrutoraPeloCodigo(codigo);
-		BeanUtils.copyProperties(construtora, construtoraSalva, "codigo");
+	public Construtora atualizar(Long id, Construtora construtora) {
+		Construtora construtoraSalva = buscarConstrutoraPeloId(id);
+		BeanUtils.copyProperties(construtora, construtoraSalva, "id");
 		return construtoraRepository.save(construtoraSalva);
 	}
 
-	public void atualizarPropriedadeAtivo(Long codigo, Boolean ativo) {
-		Construtora construtoraSalva = buscarConstrutoraPeloCodigo(codigo);
+	public void atualizarPropriedadeAtivo(Long id, Boolean ativo) {
+		Construtora construtoraSalva = buscarConstrutoraPeloId(id);
 		construtoraSalva.setAtivo(ativo);
 		construtoraRepository.save(construtoraSalva);
 	}
 	
-	public Construtora buscarConstrutoraPeloCodigo(Long codigo) {
-		Optional<Construtora> construtoraSalva = construtoraRepository.findById(codigo);
+	public Construtora buscarConstrutoraPeloId(Long id) {
+		Optional<Construtora> construtoraSalva = construtoraRepository.findById(id);
 		if (!construtoraSalva.isPresent()) {
 			throw new EmptyResultDataAccessException(1);
 		}

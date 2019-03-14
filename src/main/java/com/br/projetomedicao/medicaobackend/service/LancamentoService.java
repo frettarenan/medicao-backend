@@ -110,8 +110,8 @@ public class LancamentoService {
 		return lancamentoRepository.save(lancamento);
 	}
 
-	public Lancamento atualizar(Long codigo, Lancamento lancamento) {
-		Lancamento lancamentoSalvo = buscarLancamentoExistente(codigo);
+	public Lancamento atualizar(Long id, Lancamento lancamento) {
+		Lancamento lancamentoSalvo = buscarLancamentoExistente(id);
 		if (!lancamento.getPessoa().equals(lancamentoSalvo.getPessoa())) {
 			validarPessoa(lancamento);
 		}
@@ -124,24 +124,24 @@ public class LancamentoService {
 //			s3.substituir(lancamentoSalvo.getAnexo(), lancamento.getAnexo());
 //		}
 
-		BeanUtils.copyProperties(lancamento, lancamentoSalvo, "codigo");
+		BeanUtils.copyProperties(lancamento, lancamentoSalvo, "id");
 
 		return lancamentoRepository.save(lancamentoSalvo);
 	}
 
 	private void validarPessoa(Lancamento lancamento) {
 		Pessoa pessoa = null;
-		if (lancamento.getPessoa().getCodigo() != null) {
-			pessoa = pessoaRepository.getOne(lancamento.getPessoa().getCodigo());
+		if (lancamento.getPessoa().getId() != null) {
+			pessoa = pessoaRepository.getOne(lancamento.getPessoa().getId());
 		}
 
-		if (pessoa == null || pessoa.isInativo()) {
+		if (pessoa == null || !pessoa.getAtivo()) {
 			throw new PessoaInexistenteOuInativaException();
 		}
 	}
 
-	private Lancamento buscarLancamentoExistente(Long codigo) {
-		Optional<Lancamento> lancamentoSalvo = lancamentoRepository.findById(codigo);
+	private Lancamento buscarLancamentoExistente(Long id) {
+		Optional<Lancamento> lancamentoSalvo = lancamentoRepository.findById(id);
 		if (!lancamentoSalvo.isPresent()) {
 			throw new IllegalArgumentException();
 		}

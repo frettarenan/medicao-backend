@@ -8,7 +8,7 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(Categoria.class)
 public abstract class Categoria_ {
 
-	public static volatile SingularAttribute<Categoria, Long> codigo;
+	public static volatile SingularAttribute<Categoria, Long> id;
 	public static volatile SingularAttribute<Categoria, String> nome;
 
 }

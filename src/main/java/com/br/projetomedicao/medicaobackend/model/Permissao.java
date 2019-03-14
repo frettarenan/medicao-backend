@@ -12,7 +12,7 @@ import lombok.Data;
 public class Permissao {
 
 	@Id
-	private Long codigo;
+	private Long id;
 	private String chave;
 	private String descricao;
 

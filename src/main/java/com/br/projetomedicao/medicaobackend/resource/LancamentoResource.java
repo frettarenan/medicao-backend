@@ -106,10 +106,10 @@ public class LancamentoResource {
 		return lancamentoRepository.resumir(lancamentoFilter, pageable);
 	}
 	
-	@GetMapping("/{codigo}")
+	@GetMapping("/{id}")
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO') and #oauth2.hasScope('read')")
-	public ResponseEntity<Lancamento> buscarPeloCodigo(@PathVariable Long codigo) {
-		Optional<Lancamento> lancamento = lancamentoRepository.findById(codigo);
+	public ResponseEntity<Lancamento> buscarPeloId(@PathVariable Long id) {
+		Optional<Lancamento> lancamento = lancamentoRepository.findById(id);
 		return lancamento.isPresent() ? ResponseEntity.ok(lancamento.get()) : ResponseEntity.notFound().build();
 	}
 	
@@ -117,7 +117,7 @@ public class LancamentoResource {
 	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_LANCAMENTO') and #oauth2.hasScope('write')")
 	public ResponseEntity<Lancamento> criar(@Valid @RequestBody Lancamento lancamento, HttpServletResponse response) {
 		Lancamento lancamentoSalvo = lancamentoService.salvar(lancamento);
-		publisher.publishEvent(new RecursoCriadoEvent(this, response, lancamentoSalvo.getCodigo()));
+		publisher.publishEvent(new RecursoCriadoEvent(this, response, lancamentoSalvo.getId()));
 		return ResponseEntity.status(HttpStatus.CREATED).body(lancamentoSalvo);
 	}
 	
@@ -129,18 +129,18 @@ public class LancamentoResource {
 		return ResponseEntity.badRequest().body(erros);
 	}
 	
-	@DeleteMapping("/{codigo}")
+	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@PreAuthorize("hasAuthority('ROLE_REMOVER_LANCAMENTO') and #oauth2.hasScope('write')")
-	public void remover(@PathVariable Long codigo) {
-		lancamentoRepository.deleteById(codigo);
+	public void remover(@PathVariable Long id) {
+		lancamentoRepository.deleteById(id);
 	}
 	
-	@PutMapping("/{codigo}")
+	@PutMapping("/{id}")
 	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_LANCAMENTO')")
-	public ResponseEntity<Lancamento> atualizar(@PathVariable Long codigo, @Valid @RequestBody Lancamento lancamento) {
+	public ResponseEntity<Lancamento> atualizar(@PathVariable Long id, @Valid @RequestBody Lancamento lancamento) {
 		try {
-			Lancamento lancamentoSalvo = lancamentoService.atualizar(codigo, lancamento);
+			Lancamento lancamentoSalvo = lancamentoService.atualizar(id, lancamento);
 			return ResponseEntity.ok(lancamentoSalvo);
 		} catch (IllegalArgumentException e) {
 			return ResponseEntity.notFound().build();

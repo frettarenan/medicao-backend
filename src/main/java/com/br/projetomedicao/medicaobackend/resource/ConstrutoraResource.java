@@ -45,36 +45,36 @@ public class ConstrutoraResource {
 	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_CONSTRUTORA') and #oauth2.hasScope('write')")
 	public ResponseEntity<Construtora> criar(@Valid @RequestBody Construtora construtora, HttpServletResponse response) {
 		Construtora construtoraSalva = construtoraService.salvar(construtora);
-		publisher.publishEvent(new RecursoCriadoEvent(this, response, construtoraSalva.getCodigo()));
+		publisher.publishEvent(new RecursoCriadoEvent(this, response, construtoraSalva.getId()));
 		return ResponseEntity.status(HttpStatus.CREATED).body(construtoraSalva);
 	}
 
-	@GetMapping("/{codigo}")
+	@GetMapping("/{id}")
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_CONSTRUTORA') and #oauth2.hasScope('read')")
-	public ResponseEntity<Construtora> buscarPeloCodigo(@PathVariable Long codigo) {
-		Optional<Construtora> construtora = construtoraRepository.findById(codigo);
+	public ResponseEntity<Construtora> buscarPeloId(@PathVariable Long id) {
+		Optional<Construtora> construtora = construtoraRepository.findById(id);
 		return construtora.isPresent() ? ResponseEntity.ok(construtora.get()) : ResponseEntity.notFound().build();
 	}
 	
-	@DeleteMapping("/{codigo}")
+	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@PreAuthorize("hasAuthority('ROLE_REMOVER_CONSTRUTORA') and #oauth2.hasScope('write')")
-	public void remover(@PathVariable Long codigo) {
-		construtoraRepository.deleteById(codigo);
+	public void remover(@PathVariable Long id) {
+		construtoraRepository.deleteById(id);
 	}
 	
-	@PutMapping("/{codigo}")
+	@PutMapping("/{id}")
 	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_CONSTRUTORA') and #oauth2.hasScope('write')")
-	public ResponseEntity<Construtora> atualizar(@PathVariable Long codigo, @Valid @RequestBody Construtora construtora) {
-		Construtora construtoraSalva = construtoraService.atualizar(codigo, construtora);
+	public ResponseEntity<Construtora> atualizar(@PathVariable Long id, @Valid @RequestBody Construtora construtora) {
+		Construtora construtoraSalva = construtoraService.atualizar(id, construtora);
 		return ResponseEntity.ok(construtoraSalva);
 	}
 	
-	@PutMapping("/{codigo}/ativo")
+	@PutMapping("/{id}/ativo")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_CONSTRUTORA') and #oauth2.hasScope('write')")
-	public void atualizarPropriedadeAtivo(@PathVariable Long codigo, @RequestBody Boolean ativo) {
-		construtoraService.atualizarPropriedadeAtivo(codigo, ativo);
+	public void atualizarPropriedadeAtivo(@PathVariable Long id, @RequestBody Boolean ativo) {
+		construtoraService.atualizarPropriedadeAtivo(id, ativo);
 	}
 	
 	@GetMapping
