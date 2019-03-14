@@ -79,9 +79,8 @@ public class UsuarioResource {
 	
 	@GetMapping
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_USUARIO')")
-	public Page<Usuario> pesquisar(@RequestParam(required = false, defaultValue = "%") String nome, @RequestParam(required = false, defaultValue = "%") String email, Long idConstrutora, Pageable pageable) {		
-		// FIXME: falta filtrar pela construtora
-		return usuarioRepository.findByNomeContainingAndEmailContaining(nome, email, pageable);
+	public Page<Usuario> pesquisar(@RequestParam(required = false) String nome, @RequestParam(required = false) String email, @RequestParam(required = false) Long idConstrutora, Pageable pageable) {		
+		return usuarioRepository.pesquisar(nome, email, idConstrutora, pageable);
 	}
 
 }
