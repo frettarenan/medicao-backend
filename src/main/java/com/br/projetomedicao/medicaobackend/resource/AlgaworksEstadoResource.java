@@ -8,19 +8,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.br.projetomedicao.medicaobackend.model.Estado;
+import com.br.projetomedicao.medicaobackend.model.AlgaworksEstado;
 import com.br.projetomedicao.medicaobackend.repository.EstadoRepository;
 
-@RestController
-@RequestMapping("/estados")
-public class EstadoResource {
+//@RestController
+//@RequestMapping("/estados")
+public class AlgaworksEstadoResource {
 	
 	@Autowired
 	private EstadoRepository estadoRepository;
 	
 	@GetMapping
 	@PreAuthorize("isAuthenticated()")
-	public List<Estado> listar() {
+	public List<AlgaworksEstado> listar() {
 		return estadoRepository.findAll();
 	}
 }

@@ -20,7 +20,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "pessoa")
-public class Pessoa {
+public class AlgaworksPessoa {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,7 +30,7 @@ public class Pessoa {
 	private String nome;
 
 	@Embedded
-	private Endereco endereco;
+	private AlgaworksEndereco endereco;
 
 	@NotNull
 	private Boolean ativo;
@@ -38,6 +38,6 @@ public class Pessoa {
 	@JsonIgnoreProperties("pessoa")
 	@Valid
 	@OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Contato> contatos;
+	private List<AlgaworksContato> contatos;
 
 }

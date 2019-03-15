@@ -16,15 +16,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import com.br.projetomedicao.medicaobackend.dto.LancamentoEstatisticaPessoa;
+import com.br.projetomedicao.medicaobackend.dto.AlgaworksLancamentoEstatisticaPessoa;
 import com.br.projetomedicao.medicaobackend.mail.Mailer;
-import com.br.projetomedicao.medicaobackend.model.LancamentoAlgaworks;
-import com.br.projetomedicao.medicaobackend.model.Pessoa;
+import com.br.projetomedicao.medicaobackend.model.AlgaworksLancamento;
+import com.br.projetomedicao.medicaobackend.model.AlgaworksPessoa;
 import com.br.projetomedicao.medicaobackend.model.Usuario;
 import com.br.projetomedicao.medicaobackend.repository.LancamentoAlgaworksRepository;
 import com.br.projetomedicao.medicaobackend.repository.PessoaRepository;
 import com.br.projetomedicao.medicaobackend.repository.UsuarioRepository;
-import com.br.projetomedicao.medicaobackend.service.exception.PessoaInexistenteOuInativaException;
+import com.br.projetomedicao.medicaobackend.service.exception.AlgaworksPessoaInexistenteOuInativaException;
 
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -32,11 +32,11 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 @Service
-public class LancamentoAlgaworksService {
+public class AlgaworksLancamentoService {
 	
 	private static final String DESTINATARIOS = "ROLE_PESQUISAR_LANCAMENTO";
 	
-	private static final Logger logger = LoggerFactory.getLogger(LancamentoAlgaworksService.class);
+	private static final Logger logger = LoggerFactory.getLogger(AlgaworksLancamentoService.class);
 
 	@Autowired
 	private PessoaRepository pessoaRepository;
@@ -57,7 +57,7 @@ public class LancamentoAlgaworksService {
 					+ "e-mails de aviso de lançamentos vencidos.");
 		}
 		
-		List<LancamentoAlgaworks> vencidos = lancamentoRepository
+		List<AlgaworksLancamento> vencidos = lancamentoRepository
 				.findByDataVencimentoLessThanEqualAndDataPagamentoIsNull(LocalDate.now());
 		
 		if (vencidos.isEmpty()) {
@@ -84,7 +84,7 @@ public class LancamentoAlgaworksService {
 	}
 	
 	public byte[] relatorioPorPessoa(LocalDate inicio, LocalDate fim) throws Exception {
-		List<LancamentoEstatisticaPessoa> dados = lancamentoRepository.porPessoa(inicio, fim);
+		List<AlgaworksLancamentoEstatisticaPessoa> dados = lancamentoRepository.porPessoa(inicio, fim);
 		
 		Map<String, Object> parametros = new HashMap<>();
 		parametros.put("DT_INICIO", Date.valueOf(inicio));
@@ -100,7 +100,7 @@ public class LancamentoAlgaworksService {
 		return JasperExportManager.exportReportToPdf(jasperPrint);
 	}
 
-	public LancamentoAlgaworks salvar(LancamentoAlgaworks lancamento) {
+	public AlgaworksLancamento salvar(AlgaworksLancamento lancamento) {
 		validarPessoa(lancamento);
 		
 //		if (StringUtils.hasText(lancamento.getAnexo())) {
@@ -110,8 +110,8 @@ public class LancamentoAlgaworksService {
 		return lancamentoRepository.save(lancamento);
 	}
 
-	public LancamentoAlgaworks atualizar(Long id, LancamentoAlgaworks lancamento) {
-		LancamentoAlgaworks lancamentoBD = buscarLancamentoExistente(id);
+	public AlgaworksLancamento atualizar(Long id, AlgaworksLancamento lancamento) {
+		AlgaworksLancamento lancamentoBD = buscarLancamentoExistente(id);
 		if (!lancamento.getPessoa().equals(lancamentoBD.getPessoa())) {
 			validarPessoa(lancamento);
 		}
@@ -129,19 +129,19 @@ public class LancamentoAlgaworksService {
 		return lancamentoRepository.save(lancamentoBD);
 	}
 
-	private void validarPessoa(LancamentoAlgaworks lancamento) {
-		Pessoa pessoa = null;
+	private void validarPessoa(AlgaworksLancamento lancamento) {
+		AlgaworksPessoa pessoa = null;
 		if (lancamento.getPessoa().getId() != null) {
 			pessoa = pessoaRepository.getOne(lancamento.getPessoa().getId());
 		}
 
 		if (pessoa == null || !pessoa.getAtivo()) {
-			throw new PessoaInexistenteOuInativaException();
+			throw new AlgaworksPessoaInexistenteOuInativaException();
 		}
 	}
 
-	private LancamentoAlgaworks buscarLancamentoExistente(Long id) {
-		Optional<LancamentoAlgaworks> lancamentoBD = lancamentoRepository.findById(id);
+	private AlgaworksLancamento buscarLancamentoExistente(Long id) {
+		Optional<AlgaworksLancamento> lancamentoBD = lancamentoRepository.findById(id);
 		if (!lancamentoBD.isPresent()) {
 			throw new IllegalArgumentException();
 		}

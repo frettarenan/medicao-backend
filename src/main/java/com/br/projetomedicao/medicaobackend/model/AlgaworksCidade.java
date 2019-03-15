@@ -11,7 +11,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "cidade")
-public class Cidade {
+public class AlgaworksCidade {
 
 	@Id
 	private Long id;
@@ -20,6 +20,6 @@ public class Cidade {
 
 	@ManyToOne
 	@JoinColumn(name = "id_estado")
-	private Estado estado;
+	private AlgaworksEstado estado;
 
 }

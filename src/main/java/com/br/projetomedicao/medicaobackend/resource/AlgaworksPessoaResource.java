@@ -24,35 +24,35 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.br.projetomedicao.medicaobackend.event.RecursoCriadoEvent;
-import com.br.projetomedicao.medicaobackend.model.Pessoa;
+import com.br.projetomedicao.medicaobackend.model.AlgaworksPessoa;
 import com.br.projetomedicao.medicaobackend.repository.PessoaRepository;
-import com.br.projetomedicao.medicaobackend.service.PessoaService;
+import com.br.projetomedicao.medicaobackend.service.AlgaworksPessoaService;
 
-@RestController
-@RequestMapping("/pessoas")
-public class PessoaResource {
+//@RestController
+//@RequestMapping("/pessoas")
+public class AlgaworksPessoaResource {
 
 	@Autowired
 	private PessoaRepository pessoaRepository;
 	
 	@Autowired
-	private PessoaService pessoaService;
+	private AlgaworksPessoaService pessoaService;
 	
 	@Autowired
 	private ApplicationEventPublisher publisher;
 
 	@PostMapping
 	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_PESSOA') and #oauth2.hasScope('write')")
-	public ResponseEntity<Pessoa> criar(@Valid @RequestBody Pessoa pessoa, HttpServletResponse response) {
-		Pessoa pessoaBD = pessoaService.salvar(pessoa);
+	public ResponseEntity<AlgaworksPessoa> criar(@Valid @RequestBody AlgaworksPessoa pessoa, HttpServletResponse response) {
+		AlgaworksPessoa pessoaBD = pessoaService.salvar(pessoa);
 		publisher.publishEvent(new RecursoCriadoEvent(this, response, pessoaBD.getId()));
 		return ResponseEntity.status(HttpStatus.CREATED).body(pessoaBD);
 	}
 
 	@GetMapping("/{id}")
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_PESSOA') and #oauth2.hasScope('read')")
-	public ResponseEntity<Pessoa> buscarPeloId(@PathVariable Long id) {
-		Optional<Pessoa> pessoa = pessoaRepository.findById(id);
+	public ResponseEntity<AlgaworksPessoa> buscarPeloId(@PathVariable Long id) {
+		Optional<AlgaworksPessoa> pessoa = pessoaRepository.findById(id);
 		return pessoa.isPresent() ? ResponseEntity.ok(pessoa.get()) : ResponseEntity.notFound().build();
 	}
 	
@@ -65,8 +65,8 @@ public class PessoaResource {
 	
 	@PutMapping("/{id}")
 	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_PESSOA') and #oauth2.hasScope('write')")
-	public ResponseEntity<Pessoa> atualizar(@PathVariable Long id, @Valid @RequestBody Pessoa pessoa) {
-		Pessoa pessoaBD = pessoaService.atualizar(id, pessoa);
+	public ResponseEntity<AlgaworksPessoa> atualizar(@PathVariable Long id, @Valid @RequestBody AlgaworksPessoa pessoa) {
+		AlgaworksPessoa pessoaBD = pessoaService.atualizar(id, pessoa);
 		return ResponseEntity.ok(pessoaBD);
 	}
 	
@@ -79,7 +79,7 @@ public class PessoaResource {
 	
 	@GetMapping
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_PESSOA')")
-	public Page<Pessoa> pesquisar(@RequestParam(required = false, defaultValue = "%") String nome, Pageable pageable) {
+	public Page<AlgaworksPessoa> pesquisar(@RequestParam(required = false, defaultValue = "%") String nome, Pageable pageable) {
 		return pessoaRepository.findByNomeContaining(nome, pageable);
 	}
 

@@ -34,27 +34,27 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.br.projetomedicao.medicaobackend.dto.Anexo;
-import com.br.projetomedicao.medicaobackend.dto.LancamentoEstatisticaCategoria;
-import com.br.projetomedicao.medicaobackend.dto.LancamentoEstatisticaDia;
+import com.br.projetomedicao.medicaobackend.dto.AlgaworksAnexo;
+import com.br.projetomedicao.medicaobackend.dto.AlgaworksLancamentoEstatisticaCategoria;
+import com.br.projetomedicao.medicaobackend.dto.AlgaworksLancamentoEstatisticaDia;
 import com.br.projetomedicao.medicaobackend.event.RecursoCriadoEvent;
 import com.br.projetomedicao.medicaobackend.exceptionhandler.MedicaoBackendExceptionHandler.Erro;
-import com.br.projetomedicao.medicaobackend.model.LancamentoAlgaworks;
+import com.br.projetomedicao.medicaobackend.model.AlgaworksLancamento;
 import com.br.projetomedicao.medicaobackend.repository.LancamentoAlgaworksRepository;
 import com.br.projetomedicao.medicaobackend.repository.filter.LancamentoFilter;
 import com.br.projetomedicao.medicaobackend.repository.projection.ResumoLancamento;
-import com.br.projetomedicao.medicaobackend.service.LancamentoAlgaworksService;
-import com.br.projetomedicao.medicaobackend.service.exception.PessoaInexistenteOuInativaException;
+import com.br.projetomedicao.medicaobackend.service.AlgaworksLancamentoService;
+import com.br.projetomedicao.medicaobackend.service.exception.AlgaworksPessoaInexistenteOuInativaException;
 
-@RestController
-@RequestMapping("/lancamentos")
-public class LancamentoResource {
+//@RestController
+//@RequestMapping("/lancamentos")
+public class AlgaworksLancamentoResource {
 
 	@Autowired
 	private LancamentoAlgaworksRepository lancamentoRepository;
 	
 	@Autowired
-	private LancamentoAlgaworksService lancamentoService;
+	private AlgaworksLancamentoService lancamentoService;
 	
 	@Autowired
 	private ApplicationEventPublisher publisher;
@@ -64,7 +64,7 @@ public class LancamentoResource {
 	
 	@PostMapping("/anexo")
 	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_LANCAMENTO') and #oauth2.hasScope('write')")
-	public Anexo uploadAnexo(@RequestParam MultipartFile anexo) throws IOException {
+	public AlgaworksAnexo uploadAnexo(@RequestParam MultipartFile anexo) throws IOException {
 //		String nome = s3.salvarTemporariamente(anexo);
 //		return new Anexo(nome, s3.configurarUrl(nome));
 		return null;
@@ -84,19 +84,19 @@ public class LancamentoResource {
 	
 	@GetMapping("/estatisticas/por-dia")
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO') and #oauth2.hasScope('read')")
-	public List<LancamentoEstatisticaDia> porDia() {
+	public List<AlgaworksLancamentoEstatisticaDia> porDia() {
 		return this.lancamentoRepository.porDia(LocalDate.now());
 	}
 	
 	@GetMapping("/estatisticas/por-categoria")
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO') and #oauth2.hasScope('read')")
-	public List<LancamentoEstatisticaCategoria> porCategoria() {
+	public List<AlgaworksLancamentoEstatisticaCategoria> porCategoria() {
 		return this.lancamentoRepository.porCategoria(LocalDate.now());
 	}
 	
 	@GetMapping
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO') and #oauth2.hasScope('read')")
-	public Page<LancamentoAlgaworks> pesquisar(LancamentoFilter lancamentoFilter, Pageable pageable) {
+	public Page<AlgaworksLancamento> pesquisar(LancamentoFilter lancamentoFilter, Pageable pageable) {
 		return lancamentoRepository.filtrar(lancamentoFilter, pageable);
 	}
 	
@@ -108,21 +108,21 @@ public class LancamentoResource {
 	
 	@GetMapping("/{id}")
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO') and #oauth2.hasScope('read')")
-	public ResponseEntity<LancamentoAlgaworks> buscarPeloId(@PathVariable Long id) {
-		Optional<LancamentoAlgaworks> lancamento = lancamentoRepository.findById(id);
+	public ResponseEntity<AlgaworksLancamento> buscarPeloId(@PathVariable Long id) {
+		Optional<AlgaworksLancamento> lancamento = lancamentoRepository.findById(id);
 		return lancamento.isPresent() ? ResponseEntity.ok(lancamento.get()) : ResponseEntity.notFound().build();
 	}
 	
 	@PostMapping
 	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_LANCAMENTO') and #oauth2.hasScope('write')")
-	public ResponseEntity<LancamentoAlgaworks> criar(@Valid @RequestBody LancamentoAlgaworks lancamento, HttpServletResponse response) {
-		LancamentoAlgaworks lancamentoBD = lancamentoService.salvar(lancamento);
+	public ResponseEntity<AlgaworksLancamento> criar(@Valid @RequestBody AlgaworksLancamento lancamento, HttpServletResponse response) {
+		AlgaworksLancamento lancamentoBD = lancamentoService.salvar(lancamento);
 		publisher.publishEvent(new RecursoCriadoEvent(this, response, lancamentoBD.getId()));
 		return ResponseEntity.status(HttpStatus.CREATED).body(lancamentoBD);
 	}
 	
-	@ExceptionHandler({ PessoaInexistenteOuInativaException.class })
-	public ResponseEntity<Object> handlePessoaInexistenteOuInativaException(PessoaInexistenteOuInativaException ex) {
+	@ExceptionHandler({ AlgaworksPessoaInexistenteOuInativaException.class })
+	public ResponseEntity<Object> handlePessoaInexistenteOuInativaException(AlgaworksPessoaInexistenteOuInativaException ex) {
 		String mensagemUsuario = messageSource.getMessage("pessoa.inexistente-ou-inativa", null, LocaleContextHolder.getLocale());
 		String mensagemDesenvolvedor = ex.toString();
 		List<Erro> erros = Arrays.asList(new Erro(mensagemUsuario, mensagemDesenvolvedor));
@@ -138,9 +138,9 @@ public class LancamentoResource {
 	
 	@PutMapping("/{id}")
 	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_LANCAMENTO')")
-	public ResponseEntity<LancamentoAlgaworks> atualizar(@PathVariable Long id, @Valid @RequestBody LancamentoAlgaworks lancamento) {
+	public ResponseEntity<AlgaworksLancamento> atualizar(@PathVariable Long id, @Valid @RequestBody AlgaworksLancamento lancamento) {
 		try {
-			LancamentoAlgaworks lancamentoBD = lancamentoService.atualizar(id, lancamento);
+			AlgaworksLancamento lancamentoBD = lancamentoService.atualizar(id, lancamento);
 			return ResponseEntity.ok(lancamentoBD);
 		} catch (IllegalArgumentException e) {
 			return ResponseEntity.notFound().build();

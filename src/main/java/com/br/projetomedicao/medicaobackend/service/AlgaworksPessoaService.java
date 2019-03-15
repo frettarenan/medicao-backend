@@ -7,22 +7,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import com.br.projetomedicao.medicaobackend.model.Pessoa;
+import com.br.projetomedicao.medicaobackend.model.AlgaworksPessoa;
 import com.br.projetomedicao.medicaobackend.repository.PessoaRepository;
 
 @Service
-public class PessoaService {
+public class AlgaworksPessoaService {
 	
 	@Autowired
 	private PessoaRepository pessoaRepository;
 	
-	public Pessoa salvar(Pessoa pessoa) {
+	public AlgaworksPessoa salvar(AlgaworksPessoa pessoa) {
 		pessoa.getContatos().forEach(c -> c.setPessoa(pessoa));
 		return pessoaRepository.save(pessoa);
 	}
 
-	public Pessoa atualizar(Long id, Pessoa pessoa) {
-		Pessoa pessoaBD = buscarPessoaPeloId(id);
+	public AlgaworksPessoa atualizar(Long id, AlgaworksPessoa pessoa) {
+		AlgaworksPessoa pessoaBD = buscarPessoaPeloId(id);
 		
 		pessoaBD.getContatos().clear();
 		pessoaBD.getContatos().addAll(pessoa.getContatos());
@@ -33,13 +33,13 @@ public class PessoaService {
 	}
 
 	public void atualizarPropriedadeAtivo(Long id, Boolean ativo) {
-		Pessoa pessoaBD = buscarPessoaPeloId(id);
+		AlgaworksPessoa pessoaBD = buscarPessoaPeloId(id);
 		pessoaBD.setAtivo(ativo);
 		pessoaRepository.save(pessoaBD);
 	}
 	
-	public Pessoa buscarPessoaPeloId(Long id) {
-		Optional<Pessoa> pessoaBD = pessoaRepository.findById(id);
+	public AlgaworksPessoa buscarPessoaPeloId(Long id) {
+		Optional<AlgaworksPessoa> pessoaBD = pessoaRepository.findById(id);
 		if (!pessoaBD.isPresent()) {
 			throw new EmptyResultDataAccessException(1);
 		}

@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "estado")
-public class Estado {
+public class AlgaworksEstado {
 
 	@Id
 	private Long id;

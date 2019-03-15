@@ -1,12 +1,12 @@
 package com.br.projetomedicao.medicaobackend.dto;
 
-public class Anexo {
+public class AlgaworksAnexo {
 	
 	private String nome;
 	
 	private String url;
 
-	public Anexo(String nome, String url) {
+	public AlgaworksAnexo(String nome, String url) {
 		this.nome = nome;
 		this.url = url;
 	}

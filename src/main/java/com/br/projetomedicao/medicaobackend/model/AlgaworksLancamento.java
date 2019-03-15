@@ -25,7 +25,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "lancamento")
-public class LancamentoAlgaworks {
+public class AlgaworksLancamento {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,18 +48,18 @@ public class LancamentoAlgaworks {
 
 	@NotNull
 	@Enumerated(EnumType.STRING)
-	private TipoLancamento tipo;
+	private AlgaworksTipoLancamento tipo;
 
 	@NotNull
 	@ManyToOne
 	@JoinColumn(name = "id_categoria")
-	private Categoria categoria;
+	private AlgaworksCategoria categoria;
 
 	@JsonIgnoreProperties("contatos")
 	@NotNull
 	@ManyToOne
 	@JoinColumn(name = "id_pessoa")
-	private Pessoa pessoa;
+	private AlgaworksPessoa pessoa;
 
 	private String anexo;
 
@@ -68,7 +68,7 @@ public class LancamentoAlgaworks {
 
 	@JsonIgnore
 	public boolean isReceita() {
-		return TipoLancamento.RECEITA.equals(tipo);
+		return AlgaworksTipoLancamento.RECEITA.equals(tipo);
 	}
 
 }

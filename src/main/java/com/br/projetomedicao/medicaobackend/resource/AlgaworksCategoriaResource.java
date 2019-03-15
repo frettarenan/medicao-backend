@@ -19,12 +19,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.br.projetomedicao.medicaobackend.event.RecursoCriadoEvent;
-import com.br.projetomedicao.medicaobackend.model.Categoria;
+import com.br.projetomedicao.medicaobackend.model.AlgaworksCategoria;
 import com.br.projetomedicao.medicaobackend.repository.CategoriaRepository;
 
-@RestController
-@RequestMapping("/categorias")
-public class CategoriaResource {
+//@RestController
+//@RequestMapping("/categorias")
+public class AlgaworksCategoriaResource {
 
 	@Autowired
 	private CategoriaRepository categoriaRepository;
@@ -34,22 +34,22 @@ public class CategoriaResource {
 	
 	@GetMapping
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_CATEGORIA') and #oauth2.hasScope('read')")
-	public List<Categoria> listar() {
+	public List<AlgaworksCategoria> listar() {
 		return categoriaRepository.findAll();
 	}
 	
 	@PostMapping
 	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_CATEGORIA') and #oauth2.hasScope('write')")
-	public ResponseEntity<Categoria> criar(@Valid @RequestBody Categoria categoria, HttpServletResponse response) {
-		Categoria categoriaBD = categoriaRepository.save(categoria);
+	public ResponseEntity<AlgaworksCategoria> criar(@Valid @RequestBody AlgaworksCategoria categoria, HttpServletResponse response) {
+		AlgaworksCategoria categoriaBD = categoriaRepository.save(categoria);
 		publisher.publishEvent(new RecursoCriadoEvent(this, response, categoriaBD.getId()));
 		return ResponseEntity.status(HttpStatus.CREATED).body(categoriaBD);
 	}
 	
 	@GetMapping("/{id}")
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_CATEGORIA') and #oauth2.hasScope('read')")
-	public ResponseEntity<Categoria> buscarPeloId(@PathVariable Long id) {
-		 Optional<Categoria> categoria = categoriaRepository.findById(id);
+	public ResponseEntity<AlgaworksCategoria> buscarPeloId(@PathVariable Long id) {
+		 Optional<AlgaworksCategoria> categoria = categoriaRepository.findById(id);
 		 return categoria.isPresent() ? ResponseEntity.ok(categoria.get()) : ResponseEntity.notFound().build();
 	}
 	

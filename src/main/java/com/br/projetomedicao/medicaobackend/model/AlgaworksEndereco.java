@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Data
 @Embeddable
-public class Endereco {
+public class AlgaworksEndereco {
 
 	private String logradouro;
 	private String numero;
@@ -18,6 +18,6 @@ public class Endereco {
 
 	@ManyToOne
 	@JoinColumn(name = "id_cidade")
-	private Cidade cidade;
+	private AlgaworksCidade cidade;
 
 }

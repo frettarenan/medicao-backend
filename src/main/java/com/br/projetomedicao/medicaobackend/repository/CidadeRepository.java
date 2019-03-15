@@ -4,10 +4,10 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.br.projetomedicao.medicaobackend.model.Cidade;
+import com.br.projetomedicao.medicaobackend.model.AlgaworksCidade;
 
-public interface CidadeRepository extends JpaRepository<Cidade, Long> {
+public interface CidadeRepository extends JpaRepository<AlgaworksCidade, Long> {
 	
-	List<Cidade> findByEstadoId(Long idEstado);
+	List<AlgaworksCidade> findByEstadoId(Long idEstado);
 
 }

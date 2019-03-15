@@ -3,27 +3,27 @@ package com.br.projetomedicao.medicaobackend.dto;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import com.br.projetomedicao.medicaobackend.model.TipoLancamento;
+import com.br.projetomedicao.medicaobackend.model.AlgaworksTipoLancamento;
 
-public class LancamentoEstatisticaDia {
+public class AlgaworksLancamentoEstatisticaDia {
 	
-	private TipoLancamento tipo;
+	private AlgaworksTipoLancamento tipo;
 	
 	private LocalDate dia;
 	
 	private BigDecimal total;
 
-	public LancamentoEstatisticaDia(TipoLancamento tipo, LocalDate dia, BigDecimal total) {
+	public AlgaworksLancamentoEstatisticaDia(AlgaworksTipoLancamento tipo, LocalDate dia, BigDecimal total) {
 		this.tipo = tipo;
 		this.dia = dia;
 		this.total = total;
 	}
 
-	public TipoLancamento getTipo() {
+	public AlgaworksTipoLancamento getTipo() {
 		return tipo;
 	}
 
-	public void setTipo(TipoLancamento tipo) {
+	public void setTipo(AlgaworksTipoLancamento tipo) {
 		this.tipo = tipo;
 	}
 

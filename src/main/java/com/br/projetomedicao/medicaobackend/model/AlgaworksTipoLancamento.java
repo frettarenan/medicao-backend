@@ -1,6 +1,6 @@
 package com.br.projetomedicao.medicaobackend.model;
 
-public enum TipoLancamento {
+public enum AlgaworksTipoLancamento {
 
 	RECEITA("Receita"),
 	DESPESA("Despesa")
@@ -9,7 +9,7 @@ public enum TipoLancamento {
 	
 	private final String descricao;
 	
-	TipoLancamento(String descricao) {
+	AlgaworksTipoLancamento(String descricao) {
 		this.descricao = descricao;
 	}
 	

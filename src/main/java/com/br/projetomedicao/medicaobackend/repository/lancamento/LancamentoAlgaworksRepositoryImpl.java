@@ -17,13 +17,13 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.util.StringUtils;
 
-import com.br.projetomedicao.medicaobackend.dto.LancamentoEstatisticaCategoria;
-import com.br.projetomedicao.medicaobackend.dto.LancamentoEstatisticaDia;
-import com.br.projetomedicao.medicaobackend.dto.LancamentoEstatisticaPessoa;
-import com.br.projetomedicao.medicaobackend.model.Categoria_;
-import com.br.projetomedicao.medicaobackend.model.LancamentoAlgaworks;
-import com.br.projetomedicao.medicaobackend.model.LancamentoAlgaworks_;
-import com.br.projetomedicao.medicaobackend.model.Pessoa_;
+import com.br.projetomedicao.medicaobackend.dto.AlgaworksLancamentoEstatisticaCategoria;
+import com.br.projetomedicao.medicaobackend.dto.AlgaworksLancamentoEstatisticaDia;
+import com.br.projetomedicao.medicaobackend.dto.AlgaworksLancamentoEstatisticaPessoa;
+import com.br.projetomedicao.medicaobackend.model.AlgaworksCategoria_;
+import com.br.projetomedicao.medicaobackend.model.AlgaworksLancamento;
+import com.br.projetomedicao.medicaobackend.model.AlgaworksLancamento_;
+import com.br.projetomedicao.medicaobackend.model.AlgaworksPessoa_;
 import com.br.projetomedicao.medicaobackend.repository.filter.LancamentoFilter;
 import com.br.projetomedicao.medicaobackend.repository.projection.ResumoLancamento;
 
@@ -33,106 +33,106 @@ public class LancamentoAlgaworksRepositoryImpl implements LancamentoAlgaworksRep
 	private EntityManager manager;
 	
 	@Override
-	public List<LancamentoEstatisticaPessoa> porPessoa(LocalDate inicio, LocalDate fim) {
+	public List<AlgaworksLancamentoEstatisticaPessoa> porPessoa(LocalDate inicio, LocalDate fim) {
 		CriteriaBuilder criteriaBuilder = manager.getCriteriaBuilder();
 		
-		CriteriaQuery<LancamentoEstatisticaPessoa> criteriaQuery = criteriaBuilder.
-				createQuery(LancamentoEstatisticaPessoa.class);
+		CriteriaQuery<AlgaworksLancamentoEstatisticaPessoa> criteriaQuery = criteriaBuilder.
+				createQuery(AlgaworksLancamentoEstatisticaPessoa.class);
 		
-		Root<LancamentoAlgaworks> root = criteriaQuery.from(LancamentoAlgaworks.class);
+		Root<AlgaworksLancamento> root = criteriaQuery.from(AlgaworksLancamento.class);
 		
-		criteriaQuery.select(criteriaBuilder.construct(LancamentoEstatisticaPessoa.class, 
-				root.get(LancamentoAlgaworks_.tipo),
-				root.get(LancamentoAlgaworks_.pessoa),
-				criteriaBuilder.sum(root.get(LancamentoAlgaworks_.valor))));
+		criteriaQuery.select(criteriaBuilder.construct(AlgaworksLancamentoEstatisticaPessoa.class, 
+				root.get(AlgaworksLancamento_.tipo),
+				root.get(AlgaworksLancamento_.pessoa),
+				criteriaBuilder.sum(root.get(AlgaworksLancamento_.valor))));
 		
 		criteriaQuery.where(
-				criteriaBuilder.greaterThanOrEqualTo(root.get(LancamentoAlgaworks_.dataVencimento), 
+				criteriaBuilder.greaterThanOrEqualTo(root.get(AlgaworksLancamento_.dataVencimento), 
 						inicio),
-				criteriaBuilder.lessThanOrEqualTo(root.get(LancamentoAlgaworks_.dataVencimento), 
+				criteriaBuilder.lessThanOrEqualTo(root.get(AlgaworksLancamento_.dataVencimento), 
 						fim));
 		
-		criteriaQuery.groupBy(root.get(LancamentoAlgaworks_.tipo), 
-				root.get(LancamentoAlgaworks_.pessoa));
+		criteriaQuery.groupBy(root.get(AlgaworksLancamento_.tipo), 
+				root.get(AlgaworksLancamento_.pessoa));
 		
-		TypedQuery<LancamentoEstatisticaPessoa> typedQuery = manager
+		TypedQuery<AlgaworksLancamentoEstatisticaPessoa> typedQuery = manager
 				.createQuery(criteriaQuery);
 		
 		return typedQuery.getResultList();
 	}
 	
 	@Override
-	public List<LancamentoEstatisticaDia> porDia(LocalDate mesReferencia) {
+	public List<AlgaworksLancamentoEstatisticaDia> porDia(LocalDate mesReferencia) {
 		CriteriaBuilder criteriaBuilder = manager.getCriteriaBuilder();
 		
-		CriteriaQuery<LancamentoEstatisticaDia> criteriaQuery = criteriaBuilder.
-				createQuery(LancamentoEstatisticaDia.class);
+		CriteriaQuery<AlgaworksLancamentoEstatisticaDia> criteriaQuery = criteriaBuilder.
+				createQuery(AlgaworksLancamentoEstatisticaDia.class);
 		
-		Root<LancamentoAlgaworks> root = criteriaQuery.from(LancamentoAlgaworks.class);
+		Root<AlgaworksLancamento> root = criteriaQuery.from(AlgaworksLancamento.class);
 		
-		criteriaQuery.select(criteriaBuilder.construct(LancamentoEstatisticaDia.class, 
-				root.get(LancamentoAlgaworks_.tipo),
-				root.get(LancamentoAlgaworks_.dataVencimento),
-				criteriaBuilder.sum(root.get(LancamentoAlgaworks_.valor))));
+		criteriaQuery.select(criteriaBuilder.construct(AlgaworksLancamentoEstatisticaDia.class, 
+				root.get(AlgaworksLancamento_.tipo),
+				root.get(AlgaworksLancamento_.dataVencimento),
+				criteriaBuilder.sum(root.get(AlgaworksLancamento_.valor))));
 		
 		LocalDate primeiroDia = mesReferencia.withDayOfMonth(1);
 		LocalDate ultimoDia = mesReferencia.withDayOfMonth(mesReferencia.lengthOfMonth());
 		
 		criteriaQuery.where(
-				criteriaBuilder.greaterThanOrEqualTo(root.get(LancamentoAlgaworks_.dataVencimento), 
+				criteriaBuilder.greaterThanOrEqualTo(root.get(AlgaworksLancamento_.dataVencimento), 
 						primeiroDia),
-				criteriaBuilder.lessThanOrEqualTo(root.get(LancamentoAlgaworks_.dataVencimento), 
+				criteriaBuilder.lessThanOrEqualTo(root.get(AlgaworksLancamento_.dataVencimento), 
 						ultimoDia));
 		
-		criteriaQuery.groupBy(root.get(LancamentoAlgaworks_.tipo), 
-				root.get(LancamentoAlgaworks_.dataVencimento));
+		criteriaQuery.groupBy(root.get(AlgaworksLancamento_.tipo), 
+				root.get(AlgaworksLancamento_.dataVencimento));
 		
-		TypedQuery<LancamentoEstatisticaDia> typedQuery = manager
+		TypedQuery<AlgaworksLancamentoEstatisticaDia> typedQuery = manager
 				.createQuery(criteriaQuery);
 		
 		return typedQuery.getResultList();
 	}
 	
 	@Override
-	public List<LancamentoEstatisticaCategoria> porCategoria(LocalDate mesReferencia) {
+	public List<AlgaworksLancamentoEstatisticaCategoria> porCategoria(LocalDate mesReferencia) {
 		CriteriaBuilder criteriaBuilder = manager.getCriteriaBuilder();
 		
-		CriteriaQuery<LancamentoEstatisticaCategoria> criteriaQuery = criteriaBuilder.
-				createQuery(LancamentoEstatisticaCategoria.class);
+		CriteriaQuery<AlgaworksLancamentoEstatisticaCategoria> criteriaQuery = criteriaBuilder.
+				createQuery(AlgaworksLancamentoEstatisticaCategoria.class);
 		
-		Root<LancamentoAlgaworks> root = criteriaQuery.from(LancamentoAlgaworks.class);
+		Root<AlgaworksLancamento> root = criteriaQuery.from(AlgaworksLancamento.class);
 		
-		criteriaQuery.select(criteriaBuilder.construct(LancamentoEstatisticaCategoria.class, 
-				root.get(LancamentoAlgaworks_.categoria),
-				criteriaBuilder.sum(root.get(LancamentoAlgaworks_.valor))));
+		criteriaQuery.select(criteriaBuilder.construct(AlgaworksLancamentoEstatisticaCategoria.class, 
+				root.get(AlgaworksLancamento_.categoria),
+				criteriaBuilder.sum(root.get(AlgaworksLancamento_.valor))));
 		
 		LocalDate primeiroDia = mesReferencia.withDayOfMonth(1);
 		LocalDate ultimoDia = mesReferencia.withDayOfMonth(mesReferencia.lengthOfMonth());
 		
 		criteriaQuery.where(
-				criteriaBuilder.greaterThanOrEqualTo(root.get(LancamentoAlgaworks_.dataVencimento), 
+				criteriaBuilder.greaterThanOrEqualTo(root.get(AlgaworksLancamento_.dataVencimento), 
 						primeiroDia),
-				criteriaBuilder.lessThanOrEqualTo(root.get(LancamentoAlgaworks_.dataVencimento), 
+				criteriaBuilder.lessThanOrEqualTo(root.get(AlgaworksLancamento_.dataVencimento), 
 						ultimoDia));
 		
-		criteriaQuery.groupBy(root.get(LancamentoAlgaworks_.categoria));
+		criteriaQuery.groupBy(root.get(AlgaworksLancamento_.categoria));
 		
-		TypedQuery<LancamentoEstatisticaCategoria> typedQuery = manager
+		TypedQuery<AlgaworksLancamentoEstatisticaCategoria> typedQuery = manager
 				.createQuery(criteriaQuery);
 		
 		return typedQuery.getResultList();
 	}
 	
 	@Override
-	public Page<LancamentoAlgaworks> filtrar(LancamentoFilter lancamentoFilter, Pageable pageable) {
+	public Page<AlgaworksLancamento> filtrar(LancamentoFilter lancamentoFilter, Pageable pageable) {
 		CriteriaBuilder builder = manager.getCriteriaBuilder();
-		CriteriaQuery<LancamentoAlgaworks> criteria = builder.createQuery(LancamentoAlgaworks.class);
-		Root<LancamentoAlgaworks> root = criteria.from(LancamentoAlgaworks.class);
+		CriteriaQuery<AlgaworksLancamento> criteria = builder.createQuery(AlgaworksLancamento.class);
+		Root<AlgaworksLancamento> root = criteria.from(AlgaworksLancamento.class);
 		
 		Predicate[] predicates = criarRestricoes(lancamentoFilter, builder, root);
 		criteria.where(predicates);
 		
-		TypedQuery<LancamentoAlgaworks> query = manager.createQuery(criteria);
+		TypedQuery<AlgaworksLancamento> query = manager.createQuery(criteria);
 		adicionarRestricoesDePaginacao(query, pageable);
 		
 		return new PageImpl<>(query.getResultList(), pageable, total(lancamentoFilter));
@@ -143,14 +143,14 @@ public class LancamentoAlgaworksRepositoryImpl implements LancamentoAlgaworksRep
 	public Page<ResumoLancamento> resumir(LancamentoFilter lancamentoFilter, Pageable pageable) {
 		CriteriaBuilder builder = manager.getCriteriaBuilder();
 		CriteriaQuery<ResumoLancamento> criteria = builder.createQuery(ResumoLancamento.class);
-		Root<LancamentoAlgaworks> root = criteria.from(LancamentoAlgaworks.class);
+		Root<AlgaworksLancamento> root = criteria.from(AlgaworksLancamento.class);
 		
 		criteria.select(builder.construct(ResumoLancamento.class
-				, root.get(LancamentoAlgaworks_.id), root.get(LancamentoAlgaworks_.descricao)
-				, root.get(LancamentoAlgaworks_.dataVencimento), root.get(LancamentoAlgaworks_.dataPagamento)
-				, root.get(LancamentoAlgaworks_.valor), root.get(LancamentoAlgaworks_.tipo)
-				, root.get(LancamentoAlgaworks_.categoria).get(Categoria_.nome)
-				, root.get(LancamentoAlgaworks_.pessoa).get(Pessoa_.nome)));
+				, root.get(AlgaworksLancamento_.id), root.get(AlgaworksLancamento_.descricao)
+				, root.get(AlgaworksLancamento_.dataVencimento), root.get(AlgaworksLancamento_.dataPagamento)
+				, root.get(AlgaworksLancamento_.valor), root.get(AlgaworksLancamento_.tipo)
+				, root.get(AlgaworksLancamento_.categoria).get(AlgaworksCategoria_.nome)
+				, root.get(AlgaworksLancamento_.pessoa).get(AlgaworksPessoa_.nome)));
 		
 		Predicate[] predicates = criarRestricoes(lancamentoFilter, builder, root);
 		criteria.where(predicates);
@@ -162,22 +162,22 @@ public class LancamentoAlgaworksRepositoryImpl implements LancamentoAlgaworksRep
 	}
 
 	private Predicate[] criarRestricoes(LancamentoFilter lancamentoFilter, CriteriaBuilder builder,
-			Root<LancamentoAlgaworks> root) {
+			Root<AlgaworksLancamento> root) {
 		List<Predicate> predicates = new ArrayList<>();
 		
 		if (!StringUtils.isEmpty(lancamentoFilter.getDescricao())) {
 			predicates.add(builder.like(
-					builder.lower(root.get(LancamentoAlgaworks_.descricao)), "%" + lancamentoFilter.getDescricao().toLowerCase() + "%"));
+					builder.lower(root.get(AlgaworksLancamento_.descricao)), "%" + lancamentoFilter.getDescricao().toLowerCase() + "%"));
 		}
 		
 		if (lancamentoFilter.getDataVencimentoDe() != null) {
 			predicates.add(
-					builder.greaterThanOrEqualTo(root.get(LancamentoAlgaworks_.dataVencimento), lancamentoFilter.getDataVencimentoDe()));
+					builder.greaterThanOrEqualTo(root.get(AlgaworksLancamento_.dataVencimento), lancamentoFilter.getDataVencimentoDe()));
 		}
 		
 		if (lancamentoFilter.getDataVencimentoAte() != null) {
 			predicates.add(
-					builder.lessThanOrEqualTo(root.get(LancamentoAlgaworks_.dataVencimento), lancamentoFilter.getDataVencimentoAte()));
+					builder.lessThanOrEqualTo(root.get(AlgaworksLancamento_.dataVencimento), lancamentoFilter.getDataVencimentoAte()));
 		}
 		
 		return predicates.toArray(new Predicate[predicates.size()]);
@@ -195,7 +195,7 @@ public class LancamentoAlgaworksRepositoryImpl implements LancamentoAlgaworksRep
 	private Long total(LancamentoFilter lancamentoFilter) {
 		CriteriaBuilder builder = manager.getCriteriaBuilder();
 		CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
-		Root<LancamentoAlgaworks> root = criteria.from(LancamentoAlgaworks.class);
+		Root<AlgaworksLancamento> root = criteria.from(AlgaworksLancamento.class);
 		
 		Predicate[] predicates = criarRestricoes(lancamentoFilter, builder, root);
 		criteria.where(predicates);

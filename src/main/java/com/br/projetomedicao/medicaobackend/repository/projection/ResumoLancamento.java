@@ -3,7 +3,7 @@ package com.br.projetomedicao.medicaobackend.repository.projection;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import com.br.projetomedicao.medicaobackend.model.TipoLancamento;
+import com.br.projetomedicao.medicaobackend.model.AlgaworksTipoLancamento;
 
 import lombok.Data;
 
@@ -15,12 +15,12 @@ public class ResumoLancamento {
 	private LocalDate dataVencimento;
 	private LocalDate dataPagamento;
 	private BigDecimal valor;
-	private TipoLancamento tipo;
+	private AlgaworksTipoLancamento tipo;
 	private String categoria;
 	private String pessoa;
 	
 	public ResumoLancamento(Long id, String descricao, LocalDate dataVencimento, LocalDate dataPagamento,
-			BigDecimal valor, TipoLancamento tipo, String categoria, String pessoa) {
+			BigDecimal valor, AlgaworksTipoLancamento tipo, String categoria, String pessoa) {
 		this.id = id;
 		this.descricao = descricao;
 		this.dataVencimento = dataVencimento;
