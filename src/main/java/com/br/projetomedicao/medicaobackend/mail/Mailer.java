@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
-import com.br.projetomedicao.medicaobackend.model.Lancamento;
+import com.br.projetomedicao.medicaobackend.model.LancamentoAlgaworks;
 import com.br.projetomedicao.medicaobackend.model.Usuario;
 
 @Component
@@ -46,7 +46,7 @@ public class Mailer {
 //	}
 	
 	public void avisarSobreLancamentosVencidos(
-			List<Lancamento> vencidos, List<Usuario> destinatarios) {
+			List<LancamentoAlgaworks> vencidos, List<Usuario> destinatarios) {
 		Map<String, Object> variaveis = new HashMap<>();
 		variaveis.put("lancamentos", vencidos);
 		

@@ -39,11 +39,11 @@ import com.br.projetomedicao.medicaobackend.dto.LancamentoEstatisticaCategoria;
 import com.br.projetomedicao.medicaobackend.dto.LancamentoEstatisticaDia;
 import com.br.projetomedicao.medicaobackend.event.RecursoCriadoEvent;
 import com.br.projetomedicao.medicaobackend.exceptionhandler.MedicaoBackendExceptionHandler.Erro;
-import com.br.projetomedicao.medicaobackend.model.Lancamento;
-import com.br.projetomedicao.medicaobackend.repository.LancamentoRepository;
+import com.br.projetomedicao.medicaobackend.model.LancamentoAlgaworks;
+import com.br.projetomedicao.medicaobackend.repository.LancamentoAlgaworksRepository;
 import com.br.projetomedicao.medicaobackend.repository.filter.LancamentoFilter;
 import com.br.projetomedicao.medicaobackend.repository.projection.ResumoLancamento;
-import com.br.projetomedicao.medicaobackend.service.LancamentoService;
+import com.br.projetomedicao.medicaobackend.service.LancamentoAlgaworksService;
 import com.br.projetomedicao.medicaobackend.service.exception.PessoaInexistenteOuInativaException;
 
 @RestController
@@ -51,10 +51,10 @@ import com.br.projetomedicao.medicaobackend.service.exception.PessoaInexistenteO
 public class LancamentoResource {
 
 	@Autowired
-	private LancamentoRepository lancamentoRepository;
+	private LancamentoAlgaworksRepository lancamentoRepository;
 	
 	@Autowired
-	private LancamentoService lancamentoService;
+	private LancamentoAlgaworksService lancamentoService;
 	
 	@Autowired
 	private ApplicationEventPublisher publisher;
@@ -96,7 +96,7 @@ public class LancamentoResource {
 	
 	@GetMapping
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO') and #oauth2.hasScope('read')")
-	public Page<Lancamento> pesquisar(LancamentoFilter lancamentoFilter, Pageable pageable) {
+	public Page<LancamentoAlgaworks> pesquisar(LancamentoFilter lancamentoFilter, Pageable pageable) {
 		return lancamentoRepository.filtrar(lancamentoFilter, pageable);
 	}
 	
@@ -108,15 +108,15 @@ public class LancamentoResource {
 	
 	@GetMapping("/{id}")
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO') and #oauth2.hasScope('read')")
-	public ResponseEntity<Lancamento> buscarPeloId(@PathVariable Long id) {
-		Optional<Lancamento> lancamento = lancamentoRepository.findById(id);
+	public ResponseEntity<LancamentoAlgaworks> buscarPeloId(@PathVariable Long id) {
+		Optional<LancamentoAlgaworks> lancamento = lancamentoRepository.findById(id);
 		return lancamento.isPresent() ? ResponseEntity.ok(lancamento.get()) : ResponseEntity.notFound().build();
 	}
 	
 	@PostMapping
 	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_LANCAMENTO') and #oauth2.hasScope('write')")
-	public ResponseEntity<Lancamento> criar(@Valid @RequestBody Lancamento lancamento, HttpServletResponse response) {
-		Lancamento lancamentoBD = lancamentoService.salvar(lancamento);
+	public ResponseEntity<LancamentoAlgaworks> criar(@Valid @RequestBody LancamentoAlgaworks lancamento, HttpServletResponse response) {
+		LancamentoAlgaworks lancamentoBD = lancamentoService.salvar(lancamento);
 		publisher.publishEvent(new RecursoCriadoEvent(this, response, lancamentoBD.getId()));
 		return ResponseEntity.status(HttpStatus.CREATED).body(lancamentoBD);
 	}
@@ -138,9 +138,9 @@ public class LancamentoResource {
 	
 	@PutMapping("/{id}")
 	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_LANCAMENTO')")
-	public ResponseEntity<Lancamento> atualizar(@PathVariable Long id, @Valid @RequestBody Lancamento lancamento) {
+	public ResponseEntity<LancamentoAlgaworks> atualizar(@PathVariable Long id, @Valid @RequestBody LancamentoAlgaworks lancamento) {
 		try {
-			Lancamento lancamentoBD = lancamentoService.atualizar(id, lancamento);
+			LancamentoAlgaworks lancamentoBD = lancamentoService.atualizar(id, lancamento);
 			return ResponseEntity.ok(lancamentoBD);
 		} catch (IllegalArgumentException e) {
 			return ResponseEntity.notFound().build();

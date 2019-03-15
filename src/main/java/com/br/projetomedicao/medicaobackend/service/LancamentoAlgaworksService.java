@@ -18,10 +18,10 @@ import org.springframework.stereotype.Service;
 
 import com.br.projetomedicao.medicaobackend.dto.LancamentoEstatisticaPessoa;
 import com.br.projetomedicao.medicaobackend.mail.Mailer;
-import com.br.projetomedicao.medicaobackend.model.Lancamento;
+import com.br.projetomedicao.medicaobackend.model.LancamentoAlgaworks;
 import com.br.projetomedicao.medicaobackend.model.Pessoa;
 import com.br.projetomedicao.medicaobackend.model.Usuario;
-import com.br.projetomedicao.medicaobackend.repository.LancamentoRepository;
+import com.br.projetomedicao.medicaobackend.repository.LancamentoAlgaworksRepository;
 import com.br.projetomedicao.medicaobackend.repository.PessoaRepository;
 import com.br.projetomedicao.medicaobackend.repository.UsuarioRepository;
 import com.br.projetomedicao.medicaobackend.service.exception.PessoaInexistenteOuInativaException;
@@ -32,17 +32,17 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 @Service
-public class LancamentoService {
+public class LancamentoAlgaworksService {
 	
 	private static final String DESTINATARIOS = "ROLE_PESQUISAR_LANCAMENTO";
 	
-	private static final Logger logger = LoggerFactory.getLogger(LancamentoService.class);
+	private static final Logger logger = LoggerFactory.getLogger(LancamentoAlgaworksService.class);
 
 	@Autowired
 	private PessoaRepository pessoaRepository;
 
 	@Autowired
-	private LancamentoRepository lancamentoRepository;
+	private LancamentoAlgaworksRepository lancamentoRepository;
 	
 	@Autowired
 	private UsuarioRepository usuarioRepository;
@@ -57,7 +57,7 @@ public class LancamentoService {
 					+ "e-mails de aviso de lançamentos vencidos.");
 		}
 		
-		List<Lancamento> vencidos = lancamentoRepository
+		List<LancamentoAlgaworks> vencidos = lancamentoRepository
 				.findByDataVencimentoLessThanEqualAndDataPagamentoIsNull(LocalDate.now());
 		
 		if (vencidos.isEmpty()) {
@@ -100,7 +100,7 @@ public class LancamentoService {
 		return JasperExportManager.exportReportToPdf(jasperPrint);
 	}
 
-	public Lancamento salvar(Lancamento lancamento) {
+	public LancamentoAlgaworks salvar(LancamentoAlgaworks lancamento) {
 		validarPessoa(lancamento);
 		
 //		if (StringUtils.hasText(lancamento.getAnexo())) {
@@ -110,8 +110,8 @@ public class LancamentoService {
 		return lancamentoRepository.save(lancamento);
 	}
 
-	public Lancamento atualizar(Long id, Lancamento lancamento) {
-		Lancamento lancamentoBD = buscarLancamentoExistente(id);
+	public LancamentoAlgaworks atualizar(Long id, LancamentoAlgaworks lancamento) {
+		LancamentoAlgaworks lancamentoBD = buscarLancamentoExistente(id);
 		if (!lancamento.getPessoa().equals(lancamentoBD.getPessoa())) {
 			validarPessoa(lancamento);
 		}
@@ -129,7 +129,7 @@ public class LancamentoService {
 		return lancamentoRepository.save(lancamentoBD);
 	}
 
-	private void validarPessoa(Lancamento lancamento) {
+	private void validarPessoa(LancamentoAlgaworks lancamento) {
 		Pessoa pessoa = null;
 		if (lancamento.getPessoa().getId() != null) {
 			pessoa = pessoaRepository.getOne(lancamento.getPessoa().getId());
@@ -140,8 +140,8 @@ public class LancamentoService {
 		}
 	}
 
-	private Lancamento buscarLancamentoExistente(Long id) {
-		Optional<Lancamento> lancamentoBD = lancamentoRepository.findById(id);
+	private LancamentoAlgaworks buscarLancamentoExistente(Long id) {
+		Optional<LancamentoAlgaworks> lancamentoBD = lancamentoRepository.findById(id);
 		if (!lancamentoBD.isPresent()) {
 			throw new IllegalArgumentException();
 		}
