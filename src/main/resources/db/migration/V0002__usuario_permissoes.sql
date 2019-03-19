@@ -44,6 +44,9 @@ INSERT INTO permissao (id, chave, descricao) values (12, 'ROLE_CADASTRAR_USUARIO
 INSERT INTO permissao (id, chave, descricao) values (13, 'ROLE_REMOVER_USUARIO', 'Permissão para remover usuários');
 INSERT INTO permissao (id, chave, descricao) values (14, 'ROLE_PESQUISAR_USUARIO', 'Permissão para pesquisar usuários');
 
+INSERT INTO permissao (id, chave, descricao) values (15, 'ROLE_CADASTRAR_MATRIZ_MEDICAO', 'Permissão para cadastrar matriz medição');
+INSERT INTO permissao (id, chave, descricao) values (16, 'ROLE_PESQUISAR_MATRIZ_MEDICAO', 'Permissão para pesquisar matriz medição');
+
 -- Permissóes do usuário administrador
 INSERT INTO usuario_permissao (id_usuario, id_permissao) values (1, 1);
 INSERT INTO usuario_permissao (id_usuario, id_permissao) values (1, 2);
@@ -59,3 +62,5 @@ INSERT INTO usuario_permissao (id_usuario, id_permissao) values (1, 11);
 INSERT INTO usuario_permissao (id_usuario, id_permissao) values (1, 12);
 INSERT INTO usuario_permissao (id_usuario, id_permissao) values (1, 13);
 INSERT INTO usuario_permissao (id_usuario, id_permissao) values (1, 14);
+INSERT INTO usuario_permissao (id_usuario, id_permissao) values (1, 15);
+INSERT INTO usuario_permissao (id_usuario, id_permissao) values (1, 16);
