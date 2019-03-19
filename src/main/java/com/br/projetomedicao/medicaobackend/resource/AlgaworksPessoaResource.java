@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.br.projetomedicao.medicaobackend.event.RecursoCriadoEvent;
 import com.br.projetomedicao.medicaobackend.model.AlgaworksPessoa;
-import com.br.projetomedicao.medicaobackend.repository.PessoaRepository;
+import com.br.projetomedicao.medicaobackend.repository.AlgaworksPessoaRepository;
 import com.br.projetomedicao.medicaobackend.service.AlgaworksPessoaService;
 
 //@RestController
@@ -33,7 +33,7 @@ import com.br.projetomedicao.medicaobackend.service.AlgaworksPessoaService;
 public class AlgaworksPessoaResource {
 
 	@Autowired
-	private PessoaRepository pessoaRepository;
+	private AlgaworksPessoaRepository pessoaRepository;
 	
 	@Autowired
 	private AlgaworksPessoaService pessoaService;

@@ -20,14 +20,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.br.projetomedicao.medicaobackend.event.RecursoCriadoEvent;
 import com.br.projetomedicao.medicaobackend.model.AlgaworksCategoria;
-import com.br.projetomedicao.medicaobackend.repository.CategoriaRepository;
+import com.br.projetomedicao.medicaobackend.repository.AlgaworksCategoriaRepository;
 
 //@RestController
 //@RequestMapping("/categorias")
 public class AlgaworksCategoriaResource {
 
 	@Autowired
-	private CategoriaRepository categoriaRepository;
+	private AlgaworksCategoriaRepository categoriaRepository;
 	
 	@Autowired
 	private ApplicationEventPublisher publisher;

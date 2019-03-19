@@ -8,7 +8,7 @@ import com.br.projetomedicao.medicaobackend.model.AlgaworksTipoLancamento;
 import lombok.Data;
 
 @Data
-public class ResumoLancamento {
+public class AlgaworksResumoLancamento {
 
 	private Long id;
 	private String descricao;
@@ -19,7 +19,7 @@ public class ResumoLancamento {
 	private String categoria;
 	private String pessoa;
 	
-	public ResumoLancamento(Long id, String descricao, LocalDate dataVencimento, LocalDate dataPagamento,
+	public AlgaworksResumoLancamento(Long id, String descricao, LocalDate dataVencimento, LocalDate dataPagamento,
 			BigDecimal valor, AlgaworksTipoLancamento tipo, String categoria, String pessoa) {
 		this.id = id;
 		this.descricao = descricao;

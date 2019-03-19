@@ -40,9 +40,9 @@ import com.br.projetomedicao.medicaobackend.dto.AlgaworksLancamentoEstatisticaDi
 import com.br.projetomedicao.medicaobackend.event.RecursoCriadoEvent;
 import com.br.projetomedicao.medicaobackend.exceptionhandler.MedicaoBackendExceptionHandler.Erro;
 import com.br.projetomedicao.medicaobackend.model.AlgaworksLancamento;
-import com.br.projetomedicao.medicaobackend.repository.LancamentoAlgaworksRepository;
-import com.br.projetomedicao.medicaobackend.repository.filter.LancamentoFilter;
-import com.br.projetomedicao.medicaobackend.repository.projection.ResumoLancamento;
+import com.br.projetomedicao.medicaobackend.repository.AlgaworksLancamentoRepository;
+import com.br.projetomedicao.medicaobackend.repository.filter.AlgaworksLancamentoFilter;
+import com.br.projetomedicao.medicaobackend.repository.projection.AlgaworksResumoLancamento;
 import com.br.projetomedicao.medicaobackend.service.AlgaworksLancamentoService;
 import com.br.projetomedicao.medicaobackend.service.exception.AlgaworksPessoaInexistenteOuInativaException;
 
@@ -51,7 +51,7 @@ import com.br.projetomedicao.medicaobackend.service.exception.AlgaworksPessoaIne
 public class AlgaworksLancamentoResource {
 
 	@Autowired
-	private LancamentoAlgaworksRepository lancamentoRepository;
+	private AlgaworksLancamentoRepository lancamentoRepository;
 	
 	@Autowired
 	private AlgaworksLancamentoService lancamentoService;
@@ -96,13 +96,13 @@ public class AlgaworksLancamentoResource {
 	
 	@GetMapping
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO') and #oauth2.hasScope('read')")
-	public Page<AlgaworksLancamento> pesquisar(LancamentoFilter lancamentoFilter, Pageable pageable) {
+	public Page<AlgaworksLancamento> pesquisar(AlgaworksLancamentoFilter lancamentoFilter, Pageable pageable) {
 		return lancamentoRepository.filtrar(lancamentoFilter, pageable);
 	}
 	
 	@GetMapping(params = "resumo")
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO') and #oauth2.hasScope('read')")
-	public Page<ResumoLancamento> resumir(LancamentoFilter lancamentoFilter, Pageable pageable) {
+	public Page<AlgaworksResumoLancamento> resumir(AlgaworksLancamentoFilter lancamentoFilter, Pageable pageable) {
 		return lancamentoRepository.resumir(lancamentoFilter, pageable);
 	}
 	

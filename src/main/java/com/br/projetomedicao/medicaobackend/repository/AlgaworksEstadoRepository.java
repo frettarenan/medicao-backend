@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.br.projetomedicao.medicaobackend.model.AlgaworksEstado;
 
-public interface EstadoRepository extends JpaRepository<AlgaworksEstado, Long> {
+public interface AlgaworksEstadoRepository extends JpaRepository<AlgaworksEstado, Long> {
 
 }

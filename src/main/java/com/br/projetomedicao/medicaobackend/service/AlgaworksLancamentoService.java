@@ -21,8 +21,8 @@ import com.br.projetomedicao.medicaobackend.mail.Mailer;
 import com.br.projetomedicao.medicaobackend.model.AlgaworksLancamento;
 import com.br.projetomedicao.medicaobackend.model.AlgaworksPessoa;
 import com.br.projetomedicao.medicaobackend.model.Usuario;
-import com.br.projetomedicao.medicaobackend.repository.LancamentoAlgaworksRepository;
-import com.br.projetomedicao.medicaobackend.repository.PessoaRepository;
+import com.br.projetomedicao.medicaobackend.repository.AlgaworksLancamentoRepository;
+import com.br.projetomedicao.medicaobackend.repository.AlgaworksPessoaRepository;
 import com.br.projetomedicao.medicaobackend.repository.UsuarioRepository;
 import com.br.projetomedicao.medicaobackend.service.exception.AlgaworksPessoaInexistenteOuInativaException;
 
@@ -39,10 +39,10 @@ public class AlgaworksLancamentoService {
 	private static final Logger logger = LoggerFactory.getLogger(AlgaworksLancamentoService.class);
 
 	@Autowired
-	private PessoaRepository pessoaRepository;
+	private AlgaworksPessoaRepository pessoaRepository;
 
 	@Autowired
-	private LancamentoAlgaworksRepository lancamentoRepository;
+	private AlgaworksLancamentoRepository lancamentoRepository;
 	
 	@Autowired
 	private UsuarioRepository usuarioRepository;

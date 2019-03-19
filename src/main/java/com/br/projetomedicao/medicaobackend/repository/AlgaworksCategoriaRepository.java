@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.br.projetomedicao.medicaobackend.model.AlgaworksCategoria;
 
-public interface CategoriaRepository extends JpaRepository<AlgaworksCategoria, Long> {
+public interface AlgaworksCategoriaRepository extends JpaRepository<AlgaworksCategoria, Long> {
 
 }

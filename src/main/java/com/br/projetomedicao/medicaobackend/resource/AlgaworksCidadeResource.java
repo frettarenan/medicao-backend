@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.br.projetomedicao.medicaobackend.model.AlgaworksCidade;
-import com.br.projetomedicao.medicaobackend.repository.CidadeRepository;
+import com.br.projetomedicao.medicaobackend.repository.AlgaworksCidadeRepository;
 
 //@RestController
 //@RequestMapping("/cidades")
 public class AlgaworksCidadeResource {
 	
 	@Autowired
-	private CidadeRepository cidadeRepository;
+	private AlgaworksCidadeRepository cidadeRepository;
 	
 	@GetMapping
 	@PreAuthorize("isAuthenticated()")

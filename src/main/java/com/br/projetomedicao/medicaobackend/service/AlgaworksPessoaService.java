@@ -8,13 +8,13 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.br.projetomedicao.medicaobackend.model.AlgaworksPessoa;
-import com.br.projetomedicao.medicaobackend.repository.PessoaRepository;
+import com.br.projetomedicao.medicaobackend.repository.AlgaworksPessoaRepository;
 
 @Service
 public class AlgaworksPessoaService {
 	
 	@Autowired
-	private PessoaRepository pessoaRepository;
+	private AlgaworksPessoaRepository pessoaRepository;
 	
 	public AlgaworksPessoa salvar(AlgaworksPessoa pessoa) {
 		pessoa.getContatos().forEach(c -> c.setPessoa(pessoa));

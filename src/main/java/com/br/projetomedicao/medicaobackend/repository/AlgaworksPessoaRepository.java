@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.br.projetomedicao.medicaobackend.model.AlgaworksPessoa;
 
-public interface PessoaRepository extends JpaRepository<AlgaworksPessoa, Long> {
+public interface AlgaworksPessoaRepository extends JpaRepository<AlgaworksPessoa, Long> {
 
 	public Page<AlgaworksPessoa> findByNomeContaining(String nome, Pageable pageable);
 	

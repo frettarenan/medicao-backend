@@ -24,10 +24,10 @@ import com.br.projetomedicao.medicaobackend.model.AlgaworksCategoria_;
 import com.br.projetomedicao.medicaobackend.model.AlgaworksLancamento;
 import com.br.projetomedicao.medicaobackend.model.AlgaworksLancamento_;
 import com.br.projetomedicao.medicaobackend.model.AlgaworksPessoa_;
-import com.br.projetomedicao.medicaobackend.repository.filter.LancamentoFilter;
-import com.br.projetomedicao.medicaobackend.repository.projection.ResumoLancamento;
+import com.br.projetomedicao.medicaobackend.repository.filter.AlgaworksLancamentoFilter;
+import com.br.projetomedicao.medicaobackend.repository.projection.AlgaworksResumoLancamento;
 
-public class LancamentoAlgaworksRepositoryImpl implements LancamentoAlgaworksRepositoryQuery {
+public class AlgaworksLancamentoRepositoryImpl implements AlgaworksLancamentoRepositoryQuery {
 
 	@PersistenceContext
 	private EntityManager manager;
@@ -124,7 +124,7 @@ public class LancamentoAlgaworksRepositoryImpl implements LancamentoAlgaworksRep
 	}
 	
 	@Override
-	public Page<AlgaworksLancamento> filtrar(LancamentoFilter lancamentoFilter, Pageable pageable) {
+	public Page<AlgaworksLancamento> filtrar(AlgaworksLancamentoFilter lancamentoFilter, Pageable pageable) {
 		CriteriaBuilder builder = manager.getCriteriaBuilder();
 		CriteriaQuery<AlgaworksLancamento> criteria = builder.createQuery(AlgaworksLancamento.class);
 		Root<AlgaworksLancamento> root = criteria.from(AlgaworksLancamento.class);
@@ -140,12 +140,12 @@ public class LancamentoAlgaworksRepositoryImpl implements LancamentoAlgaworksRep
 	
 
 	@Override
-	public Page<ResumoLancamento> resumir(LancamentoFilter lancamentoFilter, Pageable pageable) {
+	public Page<AlgaworksResumoLancamento> resumir(AlgaworksLancamentoFilter lancamentoFilter, Pageable pageable) {
 		CriteriaBuilder builder = manager.getCriteriaBuilder();
-		CriteriaQuery<ResumoLancamento> criteria = builder.createQuery(ResumoLancamento.class);
+		CriteriaQuery<AlgaworksResumoLancamento> criteria = builder.createQuery(AlgaworksResumoLancamento.class);
 		Root<AlgaworksLancamento> root = criteria.from(AlgaworksLancamento.class);
 		
-		criteria.select(builder.construct(ResumoLancamento.class
+		criteria.select(builder.construct(AlgaworksResumoLancamento.class
 				, root.get(AlgaworksLancamento_.id), root.get(AlgaworksLancamento_.descricao)
 				, root.get(AlgaworksLancamento_.dataVencimento), root.get(AlgaworksLancamento_.dataPagamento)
 				, root.get(AlgaworksLancamento_.valor), root.get(AlgaworksLancamento_.tipo)
@@ -155,13 +155,13 @@ public class LancamentoAlgaworksRepositoryImpl implements LancamentoAlgaworksRep
 		Predicate[] predicates = criarRestricoes(lancamentoFilter, builder, root);
 		criteria.where(predicates);
 		
-		TypedQuery<ResumoLancamento> query = manager.createQuery(criteria);
+		TypedQuery<AlgaworksResumoLancamento> query = manager.createQuery(criteria);
 		adicionarRestricoesDePaginacao(query, pageable);
 		
 		return new PageImpl<>(query.getResultList(), pageable, total(lancamentoFilter));
 	}
 
-	private Predicate[] criarRestricoes(LancamentoFilter lancamentoFilter, CriteriaBuilder builder,
+	private Predicate[] criarRestricoes(AlgaworksLancamentoFilter lancamentoFilter, CriteriaBuilder builder,
 			Root<AlgaworksLancamento> root) {
 		List<Predicate> predicates = new ArrayList<>();
 		
@@ -192,7 +192,7 @@ public class LancamentoAlgaworksRepositoryImpl implements LancamentoAlgaworksRep
 		query.setMaxResults(totalRegistrosPorPagina);
 	}
 	
-	private Long total(LancamentoFilter lancamentoFilter) {
+	private Long total(AlgaworksLancamentoFilter lancamentoFilter) {
 		CriteriaBuilder builder = manager.getCriteriaBuilder();
 		CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
 		Root<AlgaworksLancamento> root = criteria.from(AlgaworksLancamento.class);
