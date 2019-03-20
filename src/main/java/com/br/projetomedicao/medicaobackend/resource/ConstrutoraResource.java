@@ -1,5 +1,6 @@
 package com.br.projetomedicao.medicaobackend.resource;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
@@ -81,6 +82,12 @@ public class ConstrutoraResource {
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_CONSTRUTORA')")
 	public Page<Construtora> pesquisar(@RequestParam(required = false, defaultValue = "%") String razaoSocial, Pageable pageable) {
 		return construtoraRepository.findByRazaoSocialContaining(razaoSocial, pageable);
+	}
+	
+	@GetMapping("/status/ativo")
+	@PreAuthorize("isAuthenticated()")
+	public List<Construtora> listarStatusAtivo() {
+		return construtoraRepository.findByAtivo(true);
 	}
 
 }
