@@ -5,10 +5,6 @@ CREATE TABLE contrato_servico (
 	FOREIGN KEY (id_contrato) REFERENCES contrato(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO contrato_servico (nome, id_contrato) values ('MO Locação da obra, execução de gabarito', 1);
-INSERT INTO contrato_servico (nome, id_contrato) values ('MO Instalações provisórias', 1);
 INSERT INTO contrato_servico (nome, id_contrato) values ('MO Cortina de contenção', 1);
-INSERT INTO contrato_servico (nome, id_contrato) values ('MO Cortina de contenção', 1);
+INSERT INTO contrato_servico (nome, id_contrato) values ('MO Blocos de fundação e vigas baldrame', 1);
 INSERT INTO contrato_servico (nome, id_contrato) values ('MO Recuperação de cubetas', 1);
-INSERT INTO contrato_servico (nome, id_contrato) values ('MO Estrutura de concreto armado', 1);
-INSERT INTO contrato_servico (nome, id_contrato) values ('MO Alvenaria de vedação', 1);
