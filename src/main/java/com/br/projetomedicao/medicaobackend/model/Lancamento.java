@@ -30,8 +30,8 @@ public class Lancamento {
 	@JoinColumn(name = "id_medicao", insertable=false, updatable=false)
 	private Medicao medicao;
 	
-	private BigDecimal valorQuantidade;
-	private BigDecimal valorCub;
-	private BigDecimal valorPercentual;
+	private BigDecimal quantidade;
+	private BigDecimal cub;
+	private BigDecimal percentual;
 	
 }
