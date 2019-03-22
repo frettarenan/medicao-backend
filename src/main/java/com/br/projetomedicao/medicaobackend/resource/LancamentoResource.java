@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.br.projetomedicao.medicaobackend.model.ContratoMedicao;
 import com.br.projetomedicao.medicaobackend.model.Lancamento;
+import com.br.projetomedicao.medicaobackend.model.Medicao;
 import com.br.projetomedicao.medicaobackend.repository.LancamentoRepository;
 
 @RestController
@@ -23,9 +23,9 @@ public class LancamentoResource {
 	@GetMapping
 	@PreAuthorize("isAuthenticated()")
 	public List<Lancamento> listarLancamentosPorMedicao(@RequestParam(required = true) Long idMedicao) {
-		ContratoMedicao contratoMedicao = new ContratoMedicao();
-		contratoMedicao.setId(idMedicao);
-		return lancamentoRepository.findByContratoMedicao(contratoMedicao);
+		Medicao medicao = new Medicao();
+		medicao.setId(idMedicao);
+		return lancamentoRepository.findByMedicao(medicao);
 	}
 
 }

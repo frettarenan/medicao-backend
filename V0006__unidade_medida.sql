@@ -1,4 +1,4 @@
-CREATE TABLE contrato_medicao (
+CREATE TABLE medicao (
 	id BIGINT(20) PRIMARY KEY AUTO_INCREMENT,
 	nome VARCHAR(100) NOT NULL,
 	id_contrato BIGINT(20) NOT NULL,

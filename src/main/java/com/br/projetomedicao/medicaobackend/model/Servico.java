@@ -11,14 +11,19 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "contrato_servico")
-public class ContratoServico {
+@Table(name = "servico")
+public class Servico {
 	
 	@Id
 	private Long id;
 	
 	@NotNull
 	private String nome;
+	
+	@NotNull
+	@ManyToOne
+	@JoinColumn(name = "id_unidade_medida")
+	private UnidadeMedida unidadeMedida;
 	
 	@NotNull
 	@ManyToOne

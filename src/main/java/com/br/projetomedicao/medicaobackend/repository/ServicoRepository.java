@@ -5,10 +5,10 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.br.projetomedicao.medicaobackend.model.Contrato;
-import com.br.projetomedicao.medicaobackend.model.ContratoServico;
+import com.br.projetomedicao.medicaobackend.model.Servico;
 
-public interface ServicoRepository extends JpaRepository<ContratoServico, Long> {
+public interface ServicoRepository extends JpaRepository<Servico, Long> {
 
-	List<ContratoServico> findByContrato(Contrato contrato);
+	List<Servico> findByContrato(Contrato contrato);
 
 }

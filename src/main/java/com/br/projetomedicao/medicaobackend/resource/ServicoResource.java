@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.br.projetomedicao.medicaobackend.model.ContratoMedicao;
-import com.br.projetomedicao.medicaobackend.model.ContratoServico;
+import com.br.projetomedicao.medicaobackend.model.Medicao;
+import com.br.projetomedicao.medicaobackend.model.Servico;
 import com.br.projetomedicao.medicaobackend.repository.MedicaoRepository;
 import com.br.projetomedicao.medicaobackend.repository.ServicoRepository;
 
@@ -26,9 +26,9 @@ public class ServicoResource {
 	
 	@GetMapping
 	@PreAuthorize("isAuthenticated()")
-	public List<ContratoServico> listarGruposPorMedicao(@RequestParam(required = true) Long idMedicao) {
-		ContratoMedicao contratoMedicao = medicaoRepository.findById(idMedicao).get();
-		return servicoRepository.findByContrato(contratoMedicao.getContrato());
+	public List<Servico> listarGruposPorMedicao(@RequestParam(required = true) Long idMedicao) {
+		Medicao medicao = medicaoRepository.findById(idMedicao).get();
+		return servicoRepository.findByContrato(medicao.getContrato());
 	}
 
 }

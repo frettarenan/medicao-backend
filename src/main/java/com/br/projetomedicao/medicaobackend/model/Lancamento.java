@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 
@@ -20,21 +19,19 @@ public class Lancamento {
 	private LancamentoId id;
 	
 	@ManyToOne
-	@JoinColumn(name = "id_obra_grupo", insertable=false, updatable=false)
-	private ObraGrupo obraGrupo;
+	@JoinColumn(name = "id_grupo", insertable=false, updatable=false)
+	private Grupo grupo;
 	
 	@ManyToOne
-	@JoinColumn(name = "id_contrato_servico", insertable=false, updatable=false)
-	private ContratoServico contratoServico;
+	@JoinColumn(name = "id_servico", insertable=false, updatable=false)
+	private Servico servico;
 	
 	@ManyToOne
-	@JoinColumn(name = "id_contrato_medicao", insertable=false, updatable=false)
-	private ContratoMedicao contratoMedicao;
+	@JoinColumn(name = "id_medicao", insertable=false, updatable=false)
+	private Medicao medicao;
 	
 	private BigDecimal valorQuantidade;
-	private BigDecimal valorUnidadeMedida;
-	
-	@NotNull
+	private BigDecimal valorCub;
 	private BigDecimal valorPercentual;
 	
 }

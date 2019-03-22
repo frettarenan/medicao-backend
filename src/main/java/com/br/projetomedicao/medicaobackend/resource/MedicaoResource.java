@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.br.projetomedicao.medicaobackend.model.Contrato;
-import com.br.projetomedicao.medicaobackend.model.ContratoMedicao;
+import com.br.projetomedicao.medicaobackend.model.Medicao;
 import com.br.projetomedicao.medicaobackend.repository.MedicaoRepository;
 
 @RestController
@@ -22,7 +22,7 @@ public class MedicaoResource {
 	
 	@GetMapping("/status/ativo")
 	@PreAuthorize("isAuthenticated()")
-	public List<ContratoMedicao> listarStatusAtivoPorContrato(@RequestParam(required = true) Long idContrato) {
+	public List<Medicao> listarStatusAtivoPorContrato(@RequestParam(required = true) Long idContrato) {
 		Contrato contrato = new Contrato();
 		contrato.setId(idContrato);
 		return medicaoRepository.findByContrato(contrato);

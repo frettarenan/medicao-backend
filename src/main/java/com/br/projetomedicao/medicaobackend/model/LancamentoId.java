@@ -13,13 +13,13 @@ public class LancamentoId implements Serializable {
 	
 	private static final long serialVersionUID = -4688870542687129602L;
 	
-	@Column(name = "id_obra_grupo")
-	private Long idObraGrupo;
+	@Column(name = "id_grupo")
+	private Long idGrupo;
 	
-	@Column(name = "id_contrato_servico")
-	private Long idContratoServico;
+	@Column(name = "id_servico")
+	private Long idServico;
 	
-	@Column(name = "id_contrato_medicao")
-	private Long idContratoMedicao;
+	@Column(name = "id_medicao")
+	private Long idMedicao;
 	
 }
