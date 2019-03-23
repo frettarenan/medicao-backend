@@ -1,5 +1,5 @@
 CREATE TABLE usuario (
-	id BIGINT(20) PRIMARY KEY,
+	id BIGINT(20) PRIMARY KEY AUTO_INCREMENT,
 	nome VARCHAR(50) NOT NULL,
 	id_construtora BIGINT(20),
 	telefone VARCHAR(20),	
@@ -23,7 +23,8 @@ CREATE TABLE usuario_permissao (
 	FOREIGN KEY (id_permissao) REFERENCES permissao(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO usuario (id, nome, id_construtora, telefone, email, senha, ativo, administrador) values (1, 'Administrador', NULL, NULL, 'admin@projetomedicao.com.br', '$2a$10$X607ZPhQ4EgGNaYKt3n4SONjIv9zc.VMWdEuhCuba7oLAL5IvcL5.', 1, 1);
+INSERT INTO usuario (nome, id_construtora, telefone, email, senha, ativo, administrador) values ('Administrador', NULL, NULL, 'admin@projetomedicao.com.br', '$2a$10$X607ZPhQ4EgGNaYKt3n4SONjIv9zc.VMWdEuhCuba7oLAL5IvcL5.', 1, 1);
+INSERT INTO usuario (nome, id_construtora, telefone, email, senha, ativo, administrador) values ('Usuário de Teste', 1, NULL, 'usuarioteste@projetomedicao.com.br', '$2a$10$X607ZPhQ4EgGNaYKt3n4SONjIv9zc.VMWdEuhCuba7oLAL5IvcL5.', 1, 1);
 
 INSERT INTO permissao (id, chave, descricao) values (1, 'ROLE_CADASTRAR_CATEGORIA', 'Permissão para cadastrar categorias');
 INSERT INTO permissao (id, chave, descricao) values (2, 'ROLE_PESQUISAR_CATEGORIA', 'Permissão para pesquisar categorias');
@@ -46,8 +47,9 @@ INSERT INTO permissao (id, chave, descricao) values (14, 'ROLE_PESQUISAR_USUARIO
 
 INSERT INTO permissao (id, chave, descricao) values (15, 'ROLE_CADASTRAR_MATRIZ_MEDICAO', 'Permissão para cadastrar matriz medição');
 INSERT INTO permissao (id, chave, descricao) values (16, 'ROLE_PESQUISAR_MATRIZ_MEDICAO', 'Permissão para pesquisar matriz medição');
+INSERT INTO permissao (id, chave, descricao) values (17, 'ROLE_ADMINISTRAR_MATRIZ_MEDICAO', 'Permissão para administrar matriz medição, ou seja, permite cadastrar CUB e Quantidade da Matriz');
 
--- Permissóes do usuário administrador
+-- Permissões do usuário administrador
 INSERT INTO usuario_permissao (id_usuario, id_permissao) values (1, 1);
 INSERT INTO usuario_permissao (id_usuario, id_permissao) values (1, 2);
 INSERT INTO usuario_permissao (id_usuario, id_permissao) values (1, 3);
@@ -64,3 +66,23 @@ INSERT INTO usuario_permissao (id_usuario, id_permissao) values (1, 13);
 INSERT INTO usuario_permissao (id_usuario, id_permissao) values (1, 14);
 INSERT INTO usuario_permissao (id_usuario, id_permissao) values (1, 15);
 INSERT INTO usuario_permissao (id_usuario, id_permissao) values (1, 16);
+INSERT INTO usuario_permissao (id_usuario, id_permissao) values (1, 17);
+
+-- Permissões do usuário de teste
+INSERT INTO usuario_permissao (id_usuario, id_permissao) values (2, 1);
+INSERT INTO usuario_permissao (id_usuario, id_permissao) values (2, 2);
+INSERT INTO usuario_permissao (id_usuario, id_permissao) values (2, 3);
+INSERT INTO usuario_permissao (id_usuario, id_permissao) values (2, 4);
+INSERT INTO usuario_permissao (id_usuario, id_permissao) values (2, 5);
+INSERT INTO usuario_permissao (id_usuario, id_permissao) values (2, 6);
+INSERT INTO usuario_permissao (id_usuario, id_permissao) values (2, 7);
+INSERT INTO usuario_permissao (id_usuario, id_permissao) values (2, 8);
+INSERT INTO usuario_permissao (id_usuario, id_permissao) values (2, 9);
+INSERT INTO usuario_permissao (id_usuario, id_permissao) values (2, 10);
+INSERT INTO usuario_permissao (id_usuario, id_permissao) values (2, 11);
+INSERT INTO usuario_permissao (id_usuario, id_permissao) values (2, 12);
+INSERT INTO usuario_permissao (id_usuario, id_permissao) values (2, 13);
+INSERT INTO usuario_permissao (id_usuario, id_permissao) values (2, 14);
+INSERT INTO usuario_permissao (id_usuario, id_permissao) values (2, 15);
+INSERT INTO usuario_permissao (id_usuario, id_permissao) values (2, 16);
+--INSERT INTO usuario_permissao (id_usuario, id_permissao) values (2, 17); Permissão removida para este usuário (somente administrador)
