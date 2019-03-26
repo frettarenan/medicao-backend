@@ -24,7 +24,7 @@ CREATE TABLE usuario_permissao (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO usuario (nome, id_construtora, telefone, email, senha, ativo, administrador) values ('Administrador', NULL, NULL, 'admin@projetomedicao.com.br', '$2a$10$X607ZPhQ4EgGNaYKt3n4SONjIv9zc.VMWdEuhCuba7oLAL5IvcL5.', 1, 1);
-INSERT INTO usuario (nome, id_construtora, telefone, email, senha, ativo, administrador) values ('Usuário de Teste', 1, NULL, 'usuarioteste@projetomedicao.com.br', '$2a$10$X607ZPhQ4EgGNaYKt3n4SONjIv9zc.VMWdEuhCuba7oLAL5IvcL5.', 1, 1);
+INSERT INTO usuario (nome, id_construtora, telefone, email, senha, ativo, administrador) values ('Usuário de Teste', 1, NULL, 'usuarioteste@projetomedicao.com.br', '$2a$10$X607ZPhQ4EgGNaYKt3n4SONjIv9zc.VMWdEuhCuba7oLAL5IvcL5.', 1, 0);
 
 INSERT INTO permissao (id, chave, descricao) values (1, 'ROLE_PESQUISAR_CONSTRUTORA', 'Permissão para pesquisar construtoras');
 INSERT INTO permissao (id, chave, descricao) values (2, 'ROLE_CADASTRAR_CONSTRUTORA', 'Permissão para cadastrar construtoras');
@@ -64,9 +64,9 @@ INSERT INTO usuario_permissao (id_usuario, id_permissao) values (1, 14);
 INSERT INTO usuario_permissao (id_usuario, id_permissao) values (1, 15);
 
 -- Permissões do usuário de teste
-INSERT INTO usuario_permissao (id_usuario, id_permissao) values (2, 1);
-INSERT INTO usuario_permissao (id_usuario, id_permissao) values (2, 2);
-INSERT INTO usuario_permissao (id_usuario, id_permissao) values (2, 3);
+--INSERT INTO usuario_permissao (id_usuario, id_permissao) values (2, 1); Permissão removida para este usuário (somente administrador)
+--INSERT INTO usuario_permissao (id_usuario, id_permissao) values (2, 2); Permissão removida para este usuário (somente administrador)
+--INSERT INTO usuario_permissao (id_usuario, id_permissao) values (2, 3); Permissão removida para este usuário (somente administrador)
 INSERT INTO usuario_permissao (id_usuario, id_permissao) values (2, 4);
 INSERT INTO usuario_permissao (id_usuario, id_permissao) values (2, 5);
 INSERT INTO usuario_permissao (id_usuario, id_permissao) values (2, 6);
