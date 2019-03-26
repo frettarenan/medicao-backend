@@ -33,7 +33,7 @@ public class ObraResource {
 	private ObraRepository obraRepository;
 	
 	@GetMapping
-	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_OBRA')")
+	@PreAuthorize("isAuthenticated()")
 	public Page<Obra> pesquisar(@RequestParam(required = false) String nome, @RequestParam(required = false) Long idConstrutora, Pageable pageable) {		
 		return obraRepository.pesquisar(nome, idConstrutora, pageable);
 	}

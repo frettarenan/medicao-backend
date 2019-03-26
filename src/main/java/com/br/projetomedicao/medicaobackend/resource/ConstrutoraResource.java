@@ -43,6 +43,7 @@ public class ConstrutoraResource {
 	private ApplicationEventPublisher publisher;
 	
 	@GetMapping
+	@PreAuthorize("isAuthenticated()")
 	public Page<Construtora> pesquisar(@RequestParam(required = false, defaultValue = "%") String razaoSocial, Pageable pageable) {
 		return construtoraRepository.findByRazaoSocialContaining(razaoSocial, pageable);
 	}
