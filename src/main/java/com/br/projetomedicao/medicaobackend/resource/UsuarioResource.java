@@ -40,6 +40,26 @@ public class UsuarioResource {
 	
 	@Autowired
 	private ApplicationEventPublisher publisher;
+	
+	@GetMapping
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_USUARIO')")
+	public Page<Usuario> pesquisar(@RequestParam(required = false) String nome, @RequestParam(required = false) String email, @RequestParam(required = false) Long idConstrutora, Pageable pageable) {		
+		return usuarioRepository.pesquisar(nome, email, idConstrutora, pageable);
+	}
+	
+	@PutMapping("/{id}/ativo")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_USUARIO') and #oauth2.hasScope('write')")
+	public void atualizarPropriedadeAtivo(@PathVariable Long id, @RequestBody Boolean ativo) {
+		usuarioService.atualizarPropriedadeAtivo(id, ativo);
+	}
+	
+	@DeleteMapping("/{id}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@PreAuthorize("hasAuthority('ROLE_REMOVER_USUARIO') and #oauth2.hasScope('write')")
+	public void remover(@PathVariable Long id) {
+		usuarioRepository.deleteById(id);
+	}
 
 	@PostMapping
 	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_USUARIO') and #oauth2.hasScope('write')")
@@ -56,31 +76,11 @@ public class UsuarioResource {
 		return usuario.isPresent() ? ResponseEntity.ok(usuario.get()) : ResponseEntity.notFound().build();
 	}
 	
-	@DeleteMapping("/{id}")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@PreAuthorize("hasAuthority('ROLE_REMOVER_USUARIO') and #oauth2.hasScope('write')")
-	public void remover(@PathVariable Long id) {
-		usuarioRepository.deleteById(id);
-	}
-	
 	@PutMapping("/{id}")
 	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_USUARIO') and #oauth2.hasScope('write')")
 	public ResponseEntity<Usuario> atualizar(@PathVariable Long id, @Valid @RequestBody Usuario usuario) {
 		Usuario usuarioBD = usuarioService.atualizar(id, usuario);
 		return ResponseEntity.ok(usuarioBD);
-	}
-	
-	@PutMapping("/{id}/ativo")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_USUARIO') and #oauth2.hasScope('write')")
-	public void atualizarPropriedadeAtivo(@PathVariable Long id, @RequestBody Boolean ativo) {
-		usuarioService.atualizarPropriedadeAtivo(id, ativo);
-	}
-	
-	@GetMapping
-	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_USUARIO')")
-	public Page<Usuario> pesquisar(@RequestParam(required = false) String nome, @RequestParam(required = false) String email, @RequestParam(required = false) Long idConstrutora, Pageable pageable) {		
-		return usuarioRepository.pesquisar(nome, email, idConstrutora, pageable);
 	}
 
 }
