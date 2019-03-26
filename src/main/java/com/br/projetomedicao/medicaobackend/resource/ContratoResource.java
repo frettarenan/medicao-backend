@@ -25,7 +25,7 @@ public class ContratoResource {
 	public List<Contrato> listarStatusAtivoPorObra(@RequestParam(required = true) Long idObra) {
 		Obra obra = new Obra();
 		obra.setId(idObra);
-		return contratoRepository.findByObra(obra);
+		return contratoRepository.findByAtivoAndObra(true, obra);
 	}
 
 }

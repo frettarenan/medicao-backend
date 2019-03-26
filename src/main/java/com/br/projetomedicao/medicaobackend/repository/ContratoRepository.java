@@ -9,6 +9,6 @@ import com.br.projetomedicao.medicaobackend.model.Obra;
 
 public interface ContratoRepository extends JpaRepository<Contrato, Long> {
 
-	public List<Contrato> findByObra(Obra obra);
+	public List<Contrato> findByAtivoAndObra(Boolean ativo, Obra obra);
 	
 }

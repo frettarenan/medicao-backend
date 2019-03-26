@@ -26,4 +26,7 @@ public class Contrato {
 	@JoinColumn(name = "id_obra")
 	private Obra obra;
 	
+	@NotNull
+	private Boolean ativo;
+	
 }
