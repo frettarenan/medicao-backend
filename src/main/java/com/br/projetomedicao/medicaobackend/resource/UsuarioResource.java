@@ -60,7 +60,7 @@ public class UsuarioResource {
 	public void remover(@PathVariable Long id) {
 		usuarioRepository.deleteById(id);
 	}
-
+	
 	@PostMapping
 	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_USUARIO') and #oauth2.hasScope('write')")
 	public ResponseEntity<Usuario> criar(@Valid @RequestBody Usuario usuario, HttpServletResponse response) {

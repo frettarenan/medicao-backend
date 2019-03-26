@@ -41,34 +41,11 @@ public class ConstrutoraResource {
 	
 	@Autowired
 	private ApplicationEventPublisher publisher;
-
-	@PostMapping
-	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_CONSTRUTORA') and #oauth2.hasScope('write')")
-	public ResponseEntity<Construtora> criar(@Valid @RequestBody Construtora construtora, HttpServletResponse response) {
-		Construtora construtoraBD = construtoraService.salvar(construtora);
-		publisher.publishEvent(new RecursoCriadoEvent(this, response, construtoraBD.getId()));
-		return ResponseEntity.status(HttpStatus.CREATED).body(construtoraBD);
-	}
-
-	@GetMapping("/{id}")
-	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_CONSTRUTORA') and #oauth2.hasScope('read')")
-	public ResponseEntity<Construtora> buscarPeloId(@PathVariable Long id) {
-		Optional<Construtora> construtora = construtoraRepository.findById(id);
-		return construtora.isPresent() ? ResponseEntity.ok(construtora.get()) : ResponseEntity.notFound().build();
-	}
 	
-	@DeleteMapping("/{id}")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@PreAuthorize("hasAuthority('ROLE_REMOVER_CONSTRUTORA') and #oauth2.hasScope('write')")
-	public void remover(@PathVariable Long id) {
-		construtoraRepository.deleteById(id);
-	}
-	
-	@PutMapping("/{id}")
-	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_CONSTRUTORA') and #oauth2.hasScope('write')")
-	public ResponseEntity<Construtora> atualizar(@PathVariable Long id, @Valid @RequestBody Construtora construtora) {
-		Construtora construtoraBD = construtoraService.atualizar(id, construtora);
-		return ResponseEntity.ok(construtoraBD);
+	@GetMapping
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_CONSTRUTORA')")
+	public Page<Construtora> pesquisar(@RequestParam(required = false, defaultValue = "%") String razaoSocial, Pageable pageable) {
+		return construtoraRepository.findByRazaoSocialContaining(razaoSocial, pageable);
 	}
 	
 	@PutMapping("/{id}/ativo")
@@ -78,10 +55,33 @@ public class ConstrutoraResource {
 		construtoraService.atualizarPropriedadeAtivo(id, ativo);
 	}
 	
-	@GetMapping
-	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_CONSTRUTORA')")
-	public Page<Construtora> pesquisar(@RequestParam(required = false, defaultValue = "%") String razaoSocial, Pageable pageable) {
-		return construtoraRepository.findByRazaoSocialContaining(razaoSocial, pageable);
+	@DeleteMapping("/{id}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@PreAuthorize("hasAuthority('ROLE_REMOVER_CONSTRUTORA') and #oauth2.hasScope('write')")
+	public void remover(@PathVariable Long id) {
+		construtoraRepository.deleteById(id);
+	}
+	
+	@PostMapping
+	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_CONSTRUTORA') and #oauth2.hasScope('write')")
+	public ResponseEntity<Construtora> criar(@Valid @RequestBody Construtora construtora, HttpServletResponse response) {
+		Construtora construtoraBD = construtoraService.salvar(construtora);
+		publisher.publishEvent(new RecursoCriadoEvent(this, response, construtoraBD.getId()));
+		return ResponseEntity.status(HttpStatus.CREATED).body(construtoraBD);
+	}
+	
+	@GetMapping("/{id}")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_CONSTRUTORA') and #oauth2.hasScope('read')")
+	public ResponseEntity<Construtora> buscarPeloId(@PathVariable Long id) {
+		Optional<Construtora> construtora = construtoraRepository.findById(id);
+		return construtora.isPresent() ? ResponseEntity.ok(construtora.get()) : ResponseEntity.notFound().build();
+	}
+	
+	@PutMapping("/{id}")
+	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_CONSTRUTORA') and #oauth2.hasScope('write')")
+	public ResponseEntity<Construtora> atualizar(@PathVariable Long id, @Valid @RequestBody Construtora construtora) {
+		Construtora construtoraBD = construtoraService.atualizar(id, construtora);
+		return ResponseEntity.ok(construtoraBD);
 	}
 	
 	@GetMapping("/status/ativo")

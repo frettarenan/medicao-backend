@@ -32,14 +32,6 @@ public class ObraResource {
 	@Autowired
 	private ObraRepository obraRepository;
 	
-	@GetMapping("/status/ativo")
-	@PreAuthorize("isAuthenticated()")
-	public List<Obra> listarStatusAtivoPorConstrutora(@RequestParam(required = true) Long idConstrutora) {
-		Construtora construtora = new Construtora();
-		construtora.setId(idConstrutora);
-		return obraRepository.findByAtivoAndConstrutora(true, construtora);
-	}
-	
 	@GetMapping
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_OBRA')")
 	public Page<Obra> pesquisar(@RequestParam(required = false) String nome, @RequestParam(required = false) Long idConstrutora, Pageable pageable) {		
@@ -58,6 +50,14 @@ public class ObraResource {
 	@PreAuthorize("hasAuthority('ROLE_REMOVER_OBRA') and #oauth2.hasScope('write')")
 	public void remover(@PathVariable Long id) {
 		obraRepository.deleteById(id);
+	}
+	
+	@GetMapping("/status/ativo")
+	@PreAuthorize("isAuthenticated()")
+	public List<Obra> listarStatusAtivoPorConstrutora(@RequestParam(required = true) Long idConstrutora) {
+		Construtora construtora = new Construtora();
+		construtora.setId(idConstrutora);
+		return obraRepository.findByAtivoAndConstrutora(true, construtora);
 	}
 
 }
