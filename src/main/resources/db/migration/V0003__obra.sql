@@ -8,4 +8,4 @@ CREATE TABLE obra (
 	FOREIGN KEY (id_usuario_responsavel) REFERENCES usuario(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO obra (nome, id_construtora, id_usuario_responsavel, ativo) values ('Residencial Compasso do Sol - São José/SC', 1, 1, true);
+INSERT INTO obra (nome, id_construtora, id_usuario_responsavel, ativo) values ('Residencial Compasso do Sol - São José/SC', 1, 2, true);

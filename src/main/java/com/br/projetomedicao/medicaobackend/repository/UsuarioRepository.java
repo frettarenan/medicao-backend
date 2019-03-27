@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import com.br.projetomedicao.medicaobackend.model.Construtora;
 import com.br.projetomedicao.medicaobackend.model.Usuario;
 import com.br.projetomedicao.medicaobackend.repository.usuario.UsuarioRepositoryQuery;
 
@@ -13,5 +14,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long>, Usuario
 	public Optional<Usuario> findByEmail(String email);
 	
 	public List<Usuario> findByPermissoesDescricao(String permissaoDescricao);
+
+	public List<Usuario> findByAtivoAndConstrutora(boolean ativo, Construtora construtora);
 	
 }

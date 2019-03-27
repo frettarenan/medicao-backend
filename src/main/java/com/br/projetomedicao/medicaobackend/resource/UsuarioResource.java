@@ -1,5 +1,6 @@
 package com.br.projetomedicao.medicaobackend.resource;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.br.projetomedicao.medicaobackend.event.RecursoCriadoEvent;
+import com.br.projetomedicao.medicaobackend.model.Construtora;
 import com.br.projetomedicao.medicaobackend.model.Usuario;
 import com.br.projetomedicao.medicaobackend.repository.UsuarioRepository;
 import com.br.projetomedicao.medicaobackend.service.UsuarioService;
@@ -81,6 +83,14 @@ public class UsuarioResource {
 	public ResponseEntity<Usuario> atualizar(@PathVariable Long id, @Valid @RequestBody Usuario usuario) {
 		Usuario usuarioBD = usuarioService.atualizar(id, usuario);
 		return ResponseEntity.ok(usuarioBD);
+	}
+	
+	@GetMapping("/status/ativo")
+	@PreAuthorize("isAuthenticated()")
+	public List<Usuario> listarStatusAtivoPorConstrutora(@RequestParam(required = true) Long idConstrutora) {
+		Construtora construtora = new Construtora();
+		construtora.setId(idConstrutora);
+		return usuarioRepository.findByAtivoAndConstrutora(true, construtora);
 	}
 
 }

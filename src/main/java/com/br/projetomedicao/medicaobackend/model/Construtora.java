@@ -21,7 +21,6 @@ public class Construtora {
 	@NotNull
 	private String razaoSocial;
 	
-	@NotNull
 	private String cnpj;
 
 	@NotNull
