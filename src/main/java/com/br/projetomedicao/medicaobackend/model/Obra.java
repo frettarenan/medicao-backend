@@ -23,10 +23,12 @@ public class Obra {
 	@NotNull
 	private String nome;
 	
+	@NotNull
 	@ManyToOne
 	@JoinColumn(name = "id_construtora")
 	private Construtora construtora;
 	
+	@NotNull
 	@ManyToOne
 	@JoinColumn(name = "id_usuario_responsavel")
 	private Usuario usuarioResponsavel;
