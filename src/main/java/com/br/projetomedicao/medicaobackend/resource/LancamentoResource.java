@@ -31,9 +31,6 @@ public class LancamentoResource {
 	@Autowired
 	private LancamentoService lancamentoService;
 	
-	//@Autowired
-	//private ApplicationEventPublisher publisher;
-	
 	@GetMapping
 	@PreAuthorize("isAuthenticated()")
 	public List<Lancamento> listarLancamentosPorMedicao(@RequestParam(required = true) Long idMedicao) {
@@ -46,7 +43,6 @@ public class LancamentoResource {
 	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_MATRIZ_MEDICAO') and #oauth2.hasScope('write')")
 	public ResponseEntity<List<Lancamento>> criar(@Valid @RequestBody List<Lancamento> lancamentos, HttpServletResponse response) {
 		List<Lancamento> lancamentosBD = lancamentoService.salvar(lancamentos);
-		//publisher.publishEvent(new RecursoCriadoEvent(this, response, lancamentoBD.getId()));
 		return ResponseEntity.status(HttpStatus.CREATED).body(lancamentosBD);
 	}
 

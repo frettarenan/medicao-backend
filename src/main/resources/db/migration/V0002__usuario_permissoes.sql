@@ -38,13 +38,22 @@ INSERT INTO permissao (id, chave, descricao) values (7, 'ROLE_PESQUISAR_OBRA', '
 INSERT INTO permissao (id, chave, descricao) values (8, 'ROLE_CADASTRAR_OBRA', 'Permissão para cadastrar obras');
 INSERT INTO permissao (id, chave, descricao) values (9, 'ROLE_REMOVER_OBRA', 'Permissão para remover obras');
 
-INSERT INTO permissao (id, chave, descricao) values (10, 'ROLE_PESQUISAR_CONTRATO', 'Permissão para pesquisar contratos');
-INSERT INTO permissao (id, chave, descricao) values (11, 'ROLE_CADASTRAR_CONTRATO', 'Permissão para cadastrar contratos');
-INSERT INTO permissao (id, chave, descricao) values (12, 'ROLE_REMOVER_CONTRATO', 'Permissão para remover contratos');
+INSERT INTO permissao (id, chave, descricao) values (10, 'ROLE_CADASTRAR_GRUPO', 'Permissão para cadastrar grupos');
+INSERT INTO permissao (id, chave, descricao) values (11, 'ROLE_REMOVER_GRUPO', 'Permissão para remover grupos');
 
-INSERT INTO permissao (id, chave, descricao) values (13, 'ROLE_PESQUISAR_MATRIZ_MEDICAO', 'Permissão para pesquisar matriz medição');
-INSERT INTO permissao (id, chave, descricao) values (14, 'ROLE_CADASTRAR_MATRIZ_MEDICAO', 'Permissão para cadastrar matriz medição');
-INSERT INTO permissao (id, chave, descricao) values (15, 'ROLE_ADMINISTRAR_MATRIZ_MEDICAO', 'Permissão para administrar matriz medição, ou seja, permite cadastrar CUB e Quantidade da Matriz');
+INSERT INTO permissao (id, chave, descricao) values (12, 'ROLE_PESQUISAR_CONTRATO', 'Permissão para pesquisar contratos');
+INSERT INTO permissao (id, chave, descricao) values (13, 'ROLE_CADASTRAR_CONTRATO', 'Permissão para cadastrar contratos');
+INSERT INTO permissao (id, chave, descricao) values (14, 'ROLE_REMOVER_CONTRATO', 'Permissão para remover contratos');
+
+INSERT INTO permissao (id, chave, descricao) values (15, 'ROLE_CADASTRAR_SERVICO', 'Permissão para cadastrar serviços');
+INSERT INTO permissao (id, chave, descricao) values (16, 'ROLE_REMOVER_SERVICO', 'Permissão para remover serviços');
+
+INSERT INTO permissao (id, chave, descricao) values (17, 'ROLE_CADASTRAR_MEDICAO', 'Permissão para cadastrar medições');
+INSERT INTO permissao (id, chave, descricao) values (18, 'ROLE_REMOVER_MEDICAO', 'Permissão para remover medições');
+
+INSERT INTO permissao (id, chave, descricao) values (19, 'ROLE_PESQUISAR_MATRIZ_MEDICAO', 'Permissão para pesquisar matriz medição');
+INSERT INTO permissao (id, chave, descricao) values (20, 'ROLE_CADASTRAR_MATRIZ_MEDICAO', 'Permissão para cadastrar matriz medição');
+INSERT INTO permissao (id, chave, descricao) values (21, 'ROLE_ADMINISTRAR_MATRIZ_MEDICAO', 'Permissão para administrar matriz medição, ou seja, permite cadastrar CUB e Quantidade da Matriz');
 
 -- Permissões do usuário administrador
 INSERT INTO usuario_permissao (id_usuario, id_permissao) values (1, 1);
@@ -62,6 +71,12 @@ INSERT INTO usuario_permissao (id_usuario, id_permissao) values (1, 12);
 INSERT INTO usuario_permissao (id_usuario, id_permissao) values (1, 13);
 INSERT INTO usuario_permissao (id_usuario, id_permissao) values (1, 14);
 INSERT INTO usuario_permissao (id_usuario, id_permissao) values (1, 15);
+INSERT INTO usuario_permissao (id_usuario, id_permissao) values (1, 16);
+INSERT INTO usuario_permissao (id_usuario, id_permissao) values (1, 17);
+INSERT INTO usuario_permissao (id_usuario, id_permissao) values (1, 18);
+INSERT INTO usuario_permissao (id_usuario, id_permissao) values (1, 19);
+INSERT INTO usuario_permissao (id_usuario, id_permissao) values (1, 20);
+INSERT INTO usuario_permissao (id_usuario, id_permissao) values (1, 21);
 
 -- Permissões do usuário de teste
 --INSERT INTO usuario_permissao (id_usuario, id_permissao) values (2, 1); Permissão removida para este usuário (somente administrador)
@@ -78,4 +93,10 @@ INSERT INTO usuario_permissao (id_usuario, id_permissao) values (2, 11);
 INSERT INTO usuario_permissao (id_usuario, id_permissao) values (2, 12);
 INSERT INTO usuario_permissao (id_usuario, id_permissao) values (2, 13);
 INSERT INTO usuario_permissao (id_usuario, id_permissao) values (2, 14);
---INSERT INTO usuario_permissao (id_usuario, id_permissao) values (2, 15); Permissão removida para este usuário (somente administrador)
+INSERT INTO usuario_permissao (id_usuario, id_permissao) values (2, 15);
+INSERT INTO usuario_permissao (id_usuario, id_permissao) values (2, 16);
+INSERT INTO usuario_permissao (id_usuario, id_permissao) values (2, 17);
+INSERT INTO usuario_permissao (id_usuario, id_permissao) values (2, 18);
+INSERT INTO usuario_permissao (id_usuario, id_permissao) values (2, 19);
+INSERT INTO usuario_permissao (id_usuario, id_permissao) values (2, 20);
+--INSERT INTO usuario_permissao (id_usuario, id_permissao) values (2, 21); Permissão removida para este usuário (somente administrador)
