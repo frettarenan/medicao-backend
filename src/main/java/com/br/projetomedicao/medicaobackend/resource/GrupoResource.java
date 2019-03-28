@@ -49,7 +49,9 @@ public class GrupoResource {
 	public List<Grupo> listarTodosPorObra(@PathVariable Long idObra, Pageable pageable) {
 		Obra obra = new Obra();
 		obra.setId(idObra);
-		return grupoRepository.findByObra(obra);
+		List<Grupo> grupos = grupoRepository.findByObra(obra);
+		grupoService.organizaGruposDeSistema(grupos);
+		return grupos;
 	}
 	
 	@GetMapping("/medicao/{idMedicao}")
@@ -57,22 +59,7 @@ public class GrupoResource {
 	public List<Grupo> listarGruposPorMedicao(@PathVariable Long idMedicao) {
 		Medicao contratoMedicao = medicaoRepository.findById(idMedicao).get();
 		List<Grupo> grupos = grupoRepository.findByObra(contratoMedicao.getContrato().getObra());
-		Grupo grupoTipoGrupoTotal = null;
-		Grupo grupoTipoGrupoSubTotal = null;
-		for (Grupo grupo : grupos) {
-			if (grupo.getTipoGrupo().getId().equals(TipoGrupoEnum.TOTAL.getId())) {
-				grupoTipoGrupoTotal = grupo;
-			} else if (grupo.getTipoGrupo().getId().equals(TipoGrupoEnum.SUB_TOTAL.getId())) {
-				grupoTipoGrupoSubTotal = grupo;
-			}
-			if (grupoTipoGrupoTotal != null && grupoTipoGrupoSubTotal != null) {
-				break;
-			}
-		}
-		grupos.remove(grupoTipoGrupoTotal);
-		grupos.remove(grupoTipoGrupoSubTotal);
-		grupos.add(0, grupoTipoGrupoTotal);
-		grupos.add(grupos.size(), grupoTipoGrupoSubTotal);
+		grupoService.organizaGruposDeSistema(grupos);
 		return grupos;
 	}
 	
