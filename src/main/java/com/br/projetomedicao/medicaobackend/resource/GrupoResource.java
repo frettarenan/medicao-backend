@@ -3,14 +3,16 @@ package com.br.projetomedicao.medicaobackend.resource;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.br.projetomedicao.medicaobackend.model.Grupo;
 import com.br.projetomedicao.medicaobackend.model.Medicao;
+import com.br.projetomedicao.medicaobackend.model.Obra;
 import com.br.projetomedicao.medicaobackend.repository.GrupoRepository;
 import com.br.projetomedicao.medicaobackend.repository.MedicaoRepository;
 
@@ -24,9 +26,17 @@ public class GrupoResource {
 	@Autowired
 	private MedicaoRepository medicaoRepository;
 	
-	@GetMapping
+	@GetMapping("/obra/{idObra}")
 	@PreAuthorize("isAuthenticated()")
-	public List<Grupo> listarGruposPorMedicao(@RequestParam(required = true) Long idMedicao) {
+	public List<Grupo> listarTodosPorObra(@PathVariable Long idObra, Pageable pageable) {
+		Obra obra = new Obra();
+		obra.setId(idObra);
+		return grupoRepository.findByObra(obra);
+	}
+	
+	@GetMapping("/medicao/{idMedicao}")
+	@PreAuthorize("isAuthenticated()")
+	public List<Grupo> listarGruposPorMedicao(@PathVariable Long idMedicao) {
 		Medicao contratoMedicao = medicaoRepository.findById(idMedicao).get();
 		List<Grupo> grupos = grupoRepository.findByObra(contratoMedicao.getContrato().getObra());
 		Grupo grupoTipoGrupo1 = null; // TOTAL: primeira coluna
