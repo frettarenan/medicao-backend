@@ -54,10 +54,6 @@ public class ServicoResource {
 	@PostMapping("/cadastro-rapido")
 	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_SERVICO') and #oauth2.hasScope('write')")
 	public ResponseEntity<List<Servico>> criarServicos(@Valid @RequestBody List<Servico> servicos, HttpServletResponse response) {
-		/*Optional<TipoGrupo> tipoGrupoCadastradoPeloUsuario = tipoGrupoRepository.findById(TipoGrupoEnum.CADASTRADO_PELO_USUARIO.getId());
-		for (Grupo grupo : grupos) {
-			grupo.setTipoGrupo(tipoGrupoCadastradoPeloUsuario.get());
-		}*/
 		List<Servico> servicosBD = servicoService.salvar(servicos);
 		return ResponseEntity.status(HttpStatus.CREATED).body(servicosBD);
 	}
