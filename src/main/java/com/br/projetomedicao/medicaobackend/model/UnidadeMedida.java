@@ -24,4 +24,7 @@ public class UnidadeMedida {
 	@NotNull
 	private String sigla;
 	
+	@NotNull
+	private Boolean ativo;
+	
 }
