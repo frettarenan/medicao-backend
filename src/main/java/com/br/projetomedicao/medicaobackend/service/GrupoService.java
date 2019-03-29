@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.br.projetomedicao.medicaobackend.enums.TipoGrupoEnum;
 import com.br.projetomedicao.medicaobackend.model.Grupo;
+import com.br.projetomedicao.medicaobackend.model.Obra;
+import com.br.projetomedicao.medicaobackend.model.TipoGrupo;
 import com.br.projetomedicao.medicaobackend.repository.GrupoRepository;
 
 @Service
@@ -28,7 +30,7 @@ public class GrupoService {
 		for (Grupo grupo : grupos) {
 			if (grupo.getTipoGrupo().getId().equals(TipoGrupoEnum.TOTAL.getId())) {
 				grupoTipoGrupoTotal = grupo;
-			} else if (grupo.getTipoGrupo().getId().equals(TipoGrupoEnum.SUB_TOTAL.getId())) {
+			} else if (grupo.getTipoGrupo().getId().equals(TipoGrupoEnum.SUBTOTAL.getId())) {
 				grupoTipoGrupoSubTotal = grupo;
 			}
 			if (grupoTipoGrupoTotal != null && grupoTipoGrupoSubTotal != null) {
@@ -39,6 +41,22 @@ public class GrupoService {
 		grupos.remove(grupoTipoGrupoSubTotal);
 		grupos.add(0, grupoTipoGrupoTotal);
 		grupos.add(grupos.size(), grupoTipoGrupoSubTotal);		
+	}
+
+	public void salvarGruposDeSistema(Obra obra) {
+		salvarGruposDeSistema(obra, TipoGrupoEnum.TOTAL);
+		salvarGruposDeSistema(obra, TipoGrupoEnum.SUBTOTAL);
+	}
+	
+	private void salvarGruposDeSistema(Obra obra, TipoGrupoEnum tipoGrupoEnum) {
+		TipoGrupo tipoGrupo = new TipoGrupo();
+		tipoGrupo.setId(tipoGrupoEnum.getId());
+		
+		Grupo grupo = new Grupo();
+		grupo.setNome(tipoGrupoEnum.name());
+		grupo.setObra(obra);
+		grupo.setTipoGrupo(tipoGrupo);
+		grupoRepository.save(grupo);
 	}
 
 }

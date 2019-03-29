@@ -28,6 +28,7 @@ import com.br.projetomedicao.medicaobackend.event.RecursoCriadoEvent;
 import com.br.projetomedicao.medicaobackend.model.Construtora;
 import com.br.projetomedicao.medicaobackend.model.Obra;
 import com.br.projetomedicao.medicaobackend.repository.ObraRepository;
+import com.br.projetomedicao.medicaobackend.service.GrupoService;
 import com.br.projetomedicao.medicaobackend.service.ObraService;
 
 @RestController
@@ -36,6 +37,9 @@ public class ObraResource {
 	
 	@Autowired
 	private ObraService obraService;
+	
+	@Autowired
+	private GrupoService grupoService;
 
 	@Autowired
 	private ObraRepository obraRepository;
@@ -67,6 +71,7 @@ public class ObraResource {
 	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_OBRA') and #oauth2.hasScope('write')")
 	public ResponseEntity<Obra> criar(@Valid @RequestBody Obra obra, HttpServletResponse response) {
 		Obra obraBD = obraService.salvar(obra);
+		grupoService.salvarGruposDeSistema(obra);
 		publisher.publishEvent(new RecursoCriadoEvent(this, response, obraBD.getId()));
 		return ResponseEntity.status(HttpStatus.CREATED).body(obraBD);
 	}
