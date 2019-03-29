@@ -12,7 +12,7 @@ import com.br.projetomedicao.medicaobackend.model.UnidadeMedida;
 import com.br.projetomedicao.medicaobackend.repository.UnidadeMedidaRepository;
 
 @RestController
-@RequestMapping("/unidades-medida")
+@RequestMapping("/unidades-medidas")
 public class UnidadeMedidaResource {
 
 	@Autowired
