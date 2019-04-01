@@ -40,7 +40,7 @@ public class LancamentoResource {
 	}
 	
 	@PostMapping
-	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_MATRIZ_MEDICAO') and #oauth2.hasScope('write')")
+	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_MEDICAO') and #oauth2.hasScope('write')")
 	public ResponseEntity<List<Lancamento>> criar(@Valid @RequestBody List<Lancamento> lancamentos, HttpServletResponse response) {
 		List<Lancamento> lancamentosBD = lancamentoService.salvar(lancamentos);
 		return ResponseEntity.status(HttpStatus.CREATED).body(lancamentosBD);
