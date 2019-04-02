@@ -2,6 +2,7 @@ package com.br.projetomedicao.medicaobackend.service;
 
 import java.util.Optional;
 
+import org.apache.commons.lang3.SerializationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,9 @@ public class MedicaoService {
 	
 	@Autowired
 	private MedicaoRepository medicaoRepository;
+	
+	@Autowired
+	private LancamentoService lancamentoService;
 	
 	public Medicao salvar(Medicao medicao) {
 		return medicaoRepository.save(medicao);
@@ -31,6 +35,17 @@ public class MedicaoService {
 			throw new EmptyResultDataAccessException(1);
 		}
 		return medicaoBD.get();
+	}
+
+	public Medicao salvarComo(Long id, String nome) {
+		Optional<Medicao> medicao = medicaoRepository.findById(id);
+		Medicao medicaoOrigem = medicao.get();
+		Medicao medicaoDestino = SerializationUtils.clone(medicaoOrigem);
+		medicaoDestino.setId(null);
+		medicaoDestino.setNome(nome);
+		medicaoDestino = medicaoRepository.save(medicaoDestino);
+		lancamentoService.salvarComo(medicaoOrigem, medicaoDestino);
+		return medicaoDestino;
 	}
 	
 }

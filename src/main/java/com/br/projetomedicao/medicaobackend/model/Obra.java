@@ -1,5 +1,7 @@
 package com.br.projetomedicao.medicaobackend.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,8 +16,10 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "obra")
-public class Obra {
+public class Obra implements Serializable {
 	
+	private static final long serialVersionUID = 1727930149674761620L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;

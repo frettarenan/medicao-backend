@@ -1,5 +1,6 @@
 package com.br.projetomedicao.medicaobackend.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 import javax.persistence.EmbeddedId;
@@ -13,8 +14,10 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "lancamento")
-public class Lancamento {
+public class Lancamento implements Serializable {
 	
+	private static final long serialVersionUID = -2694569627016799406L;
+
 	@EmbeddedId
 	private LancamentoId id;
 	
