@@ -40,8 +40,8 @@ public class MedicaoResource {
 	
 	@PutMapping("/{id}")
 	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_MEDICAO') and #oauth2.hasScope('write')")
-	public ResponseEntity<Medicao> atualizar(@PathVariable Long id, @Valid @RequestBody Medicao medicao) {
-		Medicao medicaoBD = medicaoService.atualizar(id, medicao);
+	public ResponseEntity<Medicao> renomear(@PathVariable Long id, @Valid @RequestBody Medicao medicao) {
+		Medicao medicaoBD = medicaoService.renomear(id, medicao);
 		return ResponseEntity.ok(medicaoBD);
 	}
 	
