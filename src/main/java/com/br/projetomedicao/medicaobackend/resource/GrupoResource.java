@@ -1,7 +1,6 @@
 package com.br.projetomedicao.medicaobackend.resource;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -18,14 +17,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.br.projetomedicao.medicaobackend.enums.TipoGrupoEnum;
 import com.br.projetomedicao.medicaobackend.model.Grupo;
 import com.br.projetomedicao.medicaobackend.model.Medicao;
 import com.br.projetomedicao.medicaobackend.model.Obra;
-import com.br.projetomedicao.medicaobackend.model.TipoGrupo;
 import com.br.projetomedicao.medicaobackend.repository.GrupoRepository;
 import com.br.projetomedicao.medicaobackend.repository.MedicaoRepository;
-import com.br.projetomedicao.medicaobackend.repository.TipoGrupoRepository;
 import com.br.projetomedicao.medicaobackend.service.GrupoService;
 
 @RestController
@@ -37,9 +33,6 @@ public class GrupoResource {
 
 	@Autowired
 	private GrupoRepository grupoRepository;
-	
-	@Autowired
-	private TipoGrupoRepository tipoGrupoRepository;
 	
 	@Autowired
 	private MedicaoRepository medicaoRepository;
@@ -63,12 +56,8 @@ public class GrupoResource {
 	
 	@PostMapping("/cadastro-rapido")
 	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_GRUPO') and #oauth2.hasScope('write')")
-	public ResponseEntity<List<Grupo>> criarGrupos(@Valid @RequestBody List<Grupo> grupos, HttpServletResponse response) {
-		Optional<TipoGrupo> tipoGrupoCadastradoPeloUsuario = tipoGrupoRepository.findById(TipoGrupoEnum.CADASTRADO_PELO_USUARIO.getId());
-		for (Grupo grupo : grupos) {
-			grupo.setTipoGrupo(tipoGrupoCadastradoPeloUsuario.get());
-		}
-		List<Grupo> gruposBD = grupoService.salvar(grupos);
+	public ResponseEntity<List<Grupo>> salvarNovosGrupos(@Valid @RequestBody List<Grupo> grupos, HttpServletResponse response) {
+		List<Grupo> gruposBD = grupoService.salvarNovosGrupos(grupos);
 		return ResponseEntity.status(HttpStatus.CREATED).body(gruposBD);
 	}
 	

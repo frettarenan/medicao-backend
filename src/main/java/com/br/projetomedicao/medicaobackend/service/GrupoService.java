@@ -1,8 +1,11 @@
 package com.br.projetomedicao.medicaobackend.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.br.projetomedicao.medicaobackend.enums.TipoGrupoEnum;
@@ -10,16 +13,16 @@ import com.br.projetomedicao.medicaobackend.model.Grupo;
 import com.br.projetomedicao.medicaobackend.model.Obra;
 import com.br.projetomedicao.medicaobackend.model.TipoGrupo;
 import com.br.projetomedicao.medicaobackend.repository.GrupoRepository;
+import com.br.projetomedicao.medicaobackend.repository.TipoGrupoRepository;
 
 @Service
 public class GrupoService {
 
 	@Autowired
 	private GrupoRepository grupoRepository;
-
-	public List<Grupo> salvar(List<Grupo> grupos) {
-		return grupoRepository.saveAll(grupos);
-	}
+	
+	@Autowired
+	private TipoGrupoRepository tipoGrupoRepository;
 
 	public void salvarGruposDeSistema(Obra obra) {
 		salvarGruposDeSistema(obra, TipoGrupoEnum.TOTAL);
@@ -59,6 +62,27 @@ public class GrupoService {
 	public boolean isGrupoSistema(Grupo grupo) {
 		return grupo.getTipoGrupo().getId().equals(TipoGrupoEnum.TOTAL.getId())
 				|| grupo.getTipoGrupo().getId().equals(TipoGrupoEnum.SUBTOTAL.getId());
+	}
+	
+	private int getProximaOrdem(Obra obra) {
+		Page<Grupo> ultimaOrdem = grupoRepository.findByObraOrderByOrdemDesc(obra, PageRequest.of(1, 1));
+		if (ultimaOrdem.getSize() > 0) {
+			Grupo grupoUltimaOrdem = ultimaOrdem.getContent().get(0);
+			if (!isGrupoSistema(grupoUltimaOrdem))
+				return grupoUltimaOrdem.getOrdem() +1;
+		}
+		return 2;
+	}
+
+	public List<Grupo> salvarNovosGrupos(List<Grupo> grupos) {
+		Optional<TipoGrupo> tipoGrupoCadastradoPeloUsuario = tipoGrupoRepository.findById(TipoGrupoEnum.CADASTRADO_PELO_USUARIO.getId());
+		int ordem = getProximaOrdem(grupos.get(0).getObra());
+		for (Grupo grupo : grupos) {
+			grupo.setTipoGrupo(tipoGrupoCadastradoPeloUsuario.get());
+			grupo.setOrdem(ordem);
+			ordem++;
+		}
+		return grupoRepository.saveAll(grupos);		
 	}
 
 }
