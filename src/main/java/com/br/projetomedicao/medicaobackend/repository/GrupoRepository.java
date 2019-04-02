@@ -9,6 +9,6 @@ import com.br.projetomedicao.medicaobackend.model.Obra;
 
 public interface GrupoRepository extends JpaRepository<Grupo, Long> {
 
-	List<Grupo> findByObra(Obra obra);
+	List<Grupo> findByObraOrderByOrdemAsc(Obra obra);
 
 }

@@ -18,45 +18,47 @@ public class GrupoService {
 	private GrupoRepository grupoRepository;
 
 	public List<Grupo> salvar(List<Grupo> grupos) {
-		for (Grupo grupo : grupos) {
-			grupoRepository.save(grupo);
-		}
-		return grupos;
-	}
-
-	public void organizaGruposDeSistema(List<Grupo> grupos) {
-		Grupo grupoTipoGrupoTotal = null;
-		Grupo grupoTipoGrupoSubTotal = null;
-		for (Grupo grupo : grupos) {
-			if (grupo.getTipoGrupo().getId().equals(TipoGrupoEnum.TOTAL.getId())) {
-				grupoTipoGrupoTotal = grupo;
-			} else if (grupo.getTipoGrupo().getId().equals(TipoGrupoEnum.SUBTOTAL.getId())) {
-				grupoTipoGrupoSubTotal = grupo;
-			}
-			if (grupoTipoGrupoTotal != null && grupoTipoGrupoSubTotal != null) {
-				break;
-			}
-		}
-		grupos.remove(grupoTipoGrupoTotal);
-		grupos.remove(grupoTipoGrupoSubTotal);
-		grupos.add(0, grupoTipoGrupoTotal);
-		grupos.add(grupos.size(), grupoTipoGrupoSubTotal);		
+		return grupoRepository.saveAll(grupos);
 	}
 
 	public void salvarGruposDeSistema(Obra obra) {
 		salvarGruposDeSistema(obra, TipoGrupoEnum.TOTAL);
 		salvarGruposDeSistema(obra, TipoGrupoEnum.SUBTOTAL);
 	}
-	
+
 	private void salvarGruposDeSistema(Obra obra, TipoGrupoEnum tipoGrupoEnum) {
 		TipoGrupo tipoGrupo = new TipoGrupo();
 		tipoGrupo.setId(tipoGrupoEnum.getId());
-		
+
 		Grupo grupo = new Grupo();
 		grupo.setNome(tipoGrupoEnum.name());
 		grupo.setObra(obra);
 		grupo.setTipoGrupo(tipoGrupo);
+		grupo.setOrdem(tipoGrupoEnum.getOrdem());
 		grupoRepository.save(grupo);
+	}
+
+	public List<Grupo> salvarOrdenacao(List<Grupo> grupos) {
+		// Passo 1: Altera a ordenação para nulo
+		for (Grupo grupo : grupos) {
+			if (!isGrupoSistema(grupo))
+				grupo.setOrdem(null);
+		}
+		grupoRepository.saveAll(grupos);
+		// Passo 2: Salva a ordenação correta
+		int ordem = 2;
+		for (Grupo grupo : grupos) {
+			if (!isGrupoSistema(grupo)) {
+				grupo.setOrdem(ordem);
+				ordem++;
+			}
+		}
+		return grupoRepository.saveAll(grupos);
+	}
+
+	public boolean isGrupoSistema(Grupo grupo) {
+		return grupo.getTipoGrupo().getId().equals(TipoGrupoEnum.TOTAL.getId())
+				|| grupo.getTipoGrupo().getId().equals(TipoGrupoEnum.SUBTOTAL.getId());
 	}
 
 }

@@ -49,8 +49,7 @@ public class GrupoResource {
 	public List<Grupo> listarTodosPorObra(@PathVariable Long idObra, Pageable pageable) {
 		Obra obra = new Obra();
 		obra.setId(idObra);
-		List<Grupo> grupos = grupoRepository.findByObra(obra);
-		grupoService.organizaGruposDeSistema(grupos);
+		List<Grupo> grupos = grupoRepository.findByObraOrderByOrdemAsc(obra);
 		return grupos;
 	}
 	
@@ -58,8 +57,7 @@ public class GrupoResource {
 	@PreAuthorize("isAuthenticated()")
 	public List<Grupo> listarGruposPorMedicao(@PathVariable Long idMedicao) {
 		Medicao contratoMedicao = medicaoRepository.findById(idMedicao).get();
-		List<Grupo> grupos = grupoRepository.findByObra(contratoMedicao.getContrato().getObra());
-		grupoService.organizaGruposDeSistema(grupos);
+		List<Grupo> grupos = grupoRepository.findByObraOrderByOrdemAsc(contratoMedicao.getContrato().getObra());
 		return grupos;
 	}
 	
@@ -71,6 +69,13 @@ public class GrupoResource {
 			grupo.setTipoGrupo(tipoGrupoCadastradoPeloUsuario.get());
 		}
 		List<Grupo> gruposBD = grupoService.salvar(grupos);
+		return ResponseEntity.status(HttpStatus.CREATED).body(gruposBD);
+	}
+	
+	@PostMapping("/ordenar")
+	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_GRUPO') and #oauth2.hasScope('write')")
+	public ResponseEntity<List<Grupo>> salvarOrdenacao(@Valid @RequestBody List<Grupo> grupos, HttpServletResponse response) {
+		List<Grupo> gruposBD = grupoService.salvarOrdenacao(grupos);
 		return ResponseEntity.status(HttpStatus.CREATED).body(gruposBD);
 	}
 

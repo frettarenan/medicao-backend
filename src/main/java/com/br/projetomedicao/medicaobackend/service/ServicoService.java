@@ -15,9 +15,6 @@ public class ServicoService {
 	private ServicoRepository servicoRepository;
 
 	public List<Servico> salvar(List<Servico> servicos) {
-		for (Servico servico : servicos) {
-			servicoRepository.save(servico);
-		}
-		return servicos;
+		return servicoRepository.saveAll(servicos);
 	}
 }

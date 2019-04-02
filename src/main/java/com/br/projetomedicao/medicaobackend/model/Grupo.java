@@ -24,6 +24,8 @@ public class Grupo implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	private Integer ordem;
+	
 	@NotNull
 	private String nome;
 	
