@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.br.projetomedicao.medicaobackend.event.RecursoCriadoEvent;
 import com.br.projetomedicao.medicaobackend.model.Contrato;
 import com.br.projetomedicao.medicaobackend.model.Medicao;
 import com.br.projetomedicao.medicaobackend.repository.MedicaoRepository;
@@ -32,6 +35,17 @@ public class MedicaoResource {
 	
 	@Autowired
 	private MedicaoService medicaoService;
+	
+	@Autowired
+	private ApplicationEventPublisher publisher;
+	
+	@PostMapping
+	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_MEDICAO') and #oauth2.hasScope('write')")
+	public ResponseEntity<Medicao> criar(@Valid @RequestBody Medicao medicao, HttpServletResponse response) {
+		Medicao medicaoBD = medicaoService.salvar(medicao);
+		publisher.publishEvent(new RecursoCriadoEvent(this, response, medicaoBD.getId()));
+		return ResponseEntity.status(HttpStatus.CREATED).body(medicaoBD);
+	}
 	
 	@PostMapping("/{id}")
 	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_MEDICAO') and #oauth2.hasScope('write')")
