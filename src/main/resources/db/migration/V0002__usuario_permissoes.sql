@@ -6,7 +6,8 @@ CREATE TABLE usuario (
 	email VARCHAR(100) NOT NULL,
 	senha VARCHAR(200) NOT NULL,
 	ativo BOOLEAN NOT NULL,
-  	administrador BOOLEAN NOT NULL
+  	administrador BOOLEAN NOT NULL,
+  	CONSTRAINT unique_email UNIQUE (email)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE permissao (
