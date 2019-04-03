@@ -41,20 +41,27 @@ public class ServicoResource {
 	public List<Servico> listarTodosPorContrato(@PathVariable Long idContrato) {
 		Contrato contrato = new Contrato();
 		contrato.setId(idContrato);
-		return servicoRepository.findByContrato(contrato);
+		return servicoRepository.findByContratoOrderByOrdemAsc(contrato);
 	}
 	
 	@GetMapping("/medicao/{idMedicao}")
 	@PreAuthorize("isAuthenticated()")
-	public List<Servico> listarGruposPorMedicao(@PathVariable Long idMedicao) {
+	public List<Servico> listarServicosPorMedicao(@PathVariable Long idMedicao) {
 		Medicao medicao = medicaoRepository.findById(idMedicao).get();
-		return servicoRepository.findByContrato(medicao.getContrato());
+		return servicoRepository.findByContratoOrderByOrdemAsc(medicao.getContrato());
 	}
 	
 	@PostMapping("/cadastro-rapido")
 	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_SERVICO') and #oauth2.hasScope('write')")
 	public ResponseEntity<List<Servico>> criarServicos(@Valid @RequestBody List<Servico> servicos, HttpServletResponse response) {
-		List<Servico> servicosBD = servicoService.salvar(servicos);
+		List<Servico> servicosBD = servicoService.salvarNovosServicos(servicos);
+		return ResponseEntity.status(HttpStatus.CREATED).body(servicosBD);
+	}
+	
+	@PostMapping("/ordenar")
+	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_SERVICO') and #oauth2.hasScope('write')")
+	public ResponseEntity<List<Servico>> salvarOrdenacao(@Valid @RequestBody List<Servico> servicos, HttpServletResponse response) {
+		List<Servico> servicosBD = servicoService.salvarOrdenacao(servicos);
 		return ResponseEntity.status(HttpStatus.CREATED).body(servicosBD);
 	}
 
