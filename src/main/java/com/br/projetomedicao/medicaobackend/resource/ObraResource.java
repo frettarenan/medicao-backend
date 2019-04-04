@@ -64,6 +64,7 @@ public class ObraResource {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@PreAuthorize("hasAuthority('ROLE_REMOVER_OBRA') and #oauth2.hasScope('write')")
 	public void remover(@PathVariable Long id) {
+		grupoService.removerGruposDeSistemaDaObra(id);
 		obraRepository.deleteById(id);
 	}
 	

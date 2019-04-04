@@ -85,4 +85,22 @@ public class GrupoService {
 		return grupoRepository.saveAll(grupos);		
 	}
 
+	public void removerGruposDeSistemaDaObra(Long idObra) {
+		TipoGrupo tipoGrupo;
+		List<Grupo> grupos;
+		
+		Obra obra = new Obra();
+		obra.setId(idObra);
+		
+		tipoGrupo = new TipoGrupo();
+		tipoGrupo.setId(TipoGrupoEnum.TOTAL.getId());
+		grupos = grupoRepository.findByObraAndTipoGrupo(obra, tipoGrupo);
+		grupoRepository.deleteAll(grupos);
+		
+		tipoGrupo = new TipoGrupo();
+		tipoGrupo.setId(TipoGrupoEnum.SUBTOTAL.getId());
+		grupos = grupoRepository.findByObraAndTipoGrupo(obra, tipoGrupo);
+		grupoRepository.deleteAll(grupos);
+	}
+
 }
