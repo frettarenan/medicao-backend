@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 
 import com.br.projetomedicao.medicaobackend.model.Construtora;
@@ -30,10 +30,10 @@ public class UsuarioService {
 	public Usuario login(String email) {
 		Optional<Usuario> usuarioOptional = usuarioRepository.findByEmail(email);
 		if (!usuarioOptional.isPresent())
-			throw new UsernameNotFoundException("Usuário inexistente ou senha inválida");
+			throw new BadCredentialsException("Usuário inexistente ou senha inválida");
 		Usuario usuario = usuarioOptional.get();
-		if (!usuario.getAtivo() || !usuario.getConstrutora().getAtivo())
-			throw new UsernameNotFoundException("Usuário inativo");
+		if (!usuario.getAtivo() || (usuario.getConstrutora() != null && !usuario.getConstrutora().getAtivo()))
+			throw new BadCredentialsException("Usuário inativo");
 		return usuario;
 	}
 	
