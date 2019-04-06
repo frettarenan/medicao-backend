@@ -6,8 +6,8 @@ CREATE TABLE servico (
 	ordem INT(3) NULL,
 	FOREIGN KEY (id_contrato) REFERENCES contrato(id),
 	FOREIGN KEY (id_unidade_medida) REFERENCES unidade_medida(id),
-	CONSTRAINT unique_nome_por_contrato UNIQUE (nome, id_contrato),
-	CONSTRAINT unique_ordem_por_contrato UNIQUE (ordem, id_contrato)
+	CONSTRAINT unique_nome_servico_por_contrato UNIQUE (nome, id_contrato),
+	CONSTRAINT unique_ordem_servico_por_contrato UNIQUE (ordem, id_contrato)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO servico (nome, id_contrato, id_unidade_medida, ordem) values ('MO Cortina de contenção', 1, 1, 1);

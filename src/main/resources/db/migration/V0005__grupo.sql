@@ -6,8 +6,8 @@ CREATE TABLE grupo (
 	ordem INT(3) NULL,
 	FOREIGN KEY (id_tipo_grupo) REFERENCES tipo_grupo(id),
 	FOREIGN KEY (id_obra) REFERENCES obra(id),
-	CONSTRAINT unique_nome_por_obra UNIQUE (nome, id_obra),
-	CONSTRAINT unique_ordem_por_obra UNIQUE (ordem, id_obra)
+	CONSTRAINT unique_nome_grupo_por_obra UNIQUE (nome, id_obra),
+	CONSTRAINT unique_ordem_grupo_por_obra UNIQUE (ordem, id_obra)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO grupo (nome, id_tipo_grupo, id_obra, ordem) values ('TOTAL', 1, 1, 1);

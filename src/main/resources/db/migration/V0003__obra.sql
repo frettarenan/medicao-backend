@@ -6,7 +6,7 @@ CREATE TABLE obra (
 	ativo BOOLEAN NOT NULL,
 	FOREIGN KEY (id_construtora) REFERENCES construtora(id),
 	FOREIGN KEY (id_usuario_responsavel) REFERENCES usuario(id),
-	CONSTRAINT unique_nome_por_construtora UNIQUE (nome, id_construtora)
+	CONSTRAINT unique_nome_obra_por_construtora UNIQUE (nome, id_construtora)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO obra (nome, id_construtora, id_usuario_responsavel, ativo) values ('Residencial Compasso do Sol - São José/SC', 1, 2, true);
