@@ -9,19 +9,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.br.projetomedicao.medicaobackend.model.UnidadeMedida;
-import com.br.projetomedicao.medicaobackend.repository.UnidadeMedidaRepository;
+import com.br.projetomedicao.medicaobackend.service.UnidadeMedidaService;
 
 @RestController
 @RequestMapping("/unidades-medidas")
 public class UnidadeMedidaResource {
 
 	@Autowired
-	private UnidadeMedidaRepository unidadeMedidaRepository;
+	private UnidadeMedidaService unidadeMedidaService;
 	
 	@GetMapping("/status/ativo")
 	@PreAuthorize("isAuthenticated()")
-	public List<UnidadeMedida> listarStatusAtivo() {
-		return unidadeMedidaRepository.findByAtivo(true);
+	public List<UnidadeMedida> listarUnidadesMedidasComStatusAtivo() {
+		return unidadeMedidaService.listarUnidadesMedidasComStatusAtivo();
 	}
 
 }

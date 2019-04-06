@@ -1,4 +1,4 @@
-package com.br.projetomedicao.medicaobackend.exceptionhandler;
+package com.br.projetomedicao.medicaobackend.config;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,6 +14,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -22,11 +23,21 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import com.br.projetomedicao.medicaobackend.exceptions.ViolacaoSegurancaException;
+
 @ControllerAdvice
-public class MedicaoBackendExceptionHandler extends ResponseEntityExceptionHandler {
+public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
 	@Autowired
 	private MessageSource messageSource;
+	
+	@ExceptionHandler({ ViolacaoSegurancaException.class })
+	public ResponseEntity<Object> handleMethodArgumentTypeMismatch(RuntimeException ex, WebRequest request) {
+		String mensagemUsuario = ex.getMessage();
+		String mensagemDesenvolvedor = ex.getCause() != null ? ex.getCause().toString() : ex.toString();
+		List<Erro> erros = Arrays.asList(new Erro(mensagemUsuario, mensagemDesenvolvedor));
+		return handleExceptionInternal(ex, erros, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+	}
 
 	@Override
 	protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {

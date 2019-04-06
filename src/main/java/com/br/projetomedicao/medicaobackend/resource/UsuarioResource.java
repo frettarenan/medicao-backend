@@ -1,13 +1,11 @@
 package com.br.projetomedicao.medicaobackend.resource;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -24,73 +22,63 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.br.projetomedicao.medicaobackend.event.RecursoCriadoEvent;
-import com.br.projetomedicao.medicaobackend.model.Construtora;
 import com.br.projetomedicao.medicaobackend.model.Usuario;
-import com.br.projetomedicao.medicaobackend.repository.UsuarioRepository;
 import com.br.projetomedicao.medicaobackend.service.UsuarioService;
+import com.br.projetomedicao.medicaobackend.utils.HttpServletResponseUtil;
 
 @RestController
 @RequestMapping("/usuarios")
 public class UsuarioResource {
 
 	@Autowired
-	private UsuarioRepository usuarioRepository;
-	
-	@Autowired
 	private UsuarioService usuarioService;
 	
-	@Autowired
-	private ApplicationEventPublisher publisher;
+	@GetMapping("/status/ativo")
+	@PreAuthorize("isAuthenticated()")
+	public List<Usuario> listarUsuariosComStatusAtivoPorConstrutora(@RequestParam(required = true) Long idConstrutora) {
+		return usuarioService.listarUsuariosComStatusAtivoPorConstrutora(idConstrutora);
+	}
 	
 	@GetMapping
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_USUARIO')")
 	public Page<Usuario> pesquisar(@RequestParam(required = false) String nome, @RequestParam(required = false) String email, @RequestParam(required = false) Long idConstrutora, Pageable pageable) {		
-		return usuarioRepository.pesquisar(nome, email, idConstrutora, pageable);
+		return usuarioService.pesquisar(nome, email, idConstrutora, pageable);
 	}
 	
-	@PutMapping("/{id}/ativo")
+	@PutMapping("/{idUsuario}/ativo")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_USUARIO') and #oauth2.hasScope('write')")
-	public void atualizarPropriedadeAtivo(@PathVariable Long id, @RequestBody Boolean ativo) {
-		usuarioService.atualizarPropriedadeAtivo(id, ativo);
+	public void atualizarPropriedadeAtivo(@PathVariable Long idUsuario, @RequestBody Boolean ativo) {
+		usuarioService.atualizarPropriedadeAtivo(idUsuario, ativo);
 	}
 	
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/{idUsuario}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@PreAuthorize("hasAuthority('ROLE_REMOVER_USUARIO') and #oauth2.hasScope('write')")
-	public void remover(@PathVariable Long id) {
-		usuarioRepository.deleteById(id);
+	public void remover(@PathVariable Long idUsuario) {
+		usuarioService.remover(idUsuario);
 	}
 	
 	@PostMapping
 	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_USUARIO') and #oauth2.hasScope('write')")
-	public ResponseEntity<Usuario> criar(@Valid @RequestBody Usuario usuario, HttpServletResponse response) {
+	public ResponseEntity<Usuario> salvar(@Valid @RequestBody Usuario usuario, HttpServletResponse response) {
 		Usuario usuarioBD = usuarioService.salvar(usuario);
-		publisher.publishEvent(new RecursoCriadoEvent(this, response, usuarioBD.getId()));
+		HttpServletResponseUtil.adicionarHeaderLocation(response, usuarioBD.getId());
 		return ResponseEntity.status(HttpStatus.CREATED).body(usuarioBD);
 	}
 
-	@GetMapping("/{id}")
+	@GetMapping("/{idUsuario}")
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_USUARIO') and #oauth2.hasScope('read')")
-	public ResponseEntity<Usuario> buscarPeloId(@PathVariable Long id) {
-		Optional<Usuario> usuario = usuarioRepository.findById(id);
-		return usuario.isPresent() ? ResponseEntity.ok(usuario.get()) : ResponseEntity.notFound().build();
-	}
-	
-	@PutMapping("/{id}")
-	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_USUARIO') and #oauth2.hasScope('write')")
-	public ResponseEntity<Usuario> atualizar(@PathVariable Long id, @Valid @RequestBody Usuario usuario) {
-		Usuario usuarioBD = usuarioService.atualizar(id, usuario);
+	public ResponseEntity<Usuario> buscarPeloId(@PathVariable Long idUsuario) {
+		Usuario usuarioBD = usuarioService.buscarUsuarioPeloId(idUsuario);
 		return ResponseEntity.ok(usuarioBD);
 	}
 	
-	@GetMapping("/status/ativo")
-	@PreAuthorize("isAuthenticated()")
-	public List<Usuario> listarStatusAtivoPorConstrutora(@RequestParam(required = true) Long idConstrutora) {
-		Construtora construtora = new Construtora();
-		construtora.setId(idConstrutora);
-		return usuarioRepository.findByAtivoAndConstrutora(true, construtora);
+	@PutMapping("/{idUsuario}")
+	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_USUARIO') and #oauth2.hasScope('write')")
+	public ResponseEntity<Usuario> atualizar(@PathVariable Long idUsuario, @Valid @RequestBody Usuario usuario) {
+		Usuario usuarioBD = usuarioService.atualizar(idUsuario, usuario);
+		return ResponseEntity.ok(usuarioBD);
 	}
-
+	
 }

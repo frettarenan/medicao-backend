@@ -1,13 +1,11 @@
 package com.br.projetomedicao.medicaobackend.resource;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -24,12 +22,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.br.projetomedicao.medicaobackend.event.RecursoCriadoEvent;
-import com.br.projetomedicao.medicaobackend.model.Construtora;
 import com.br.projetomedicao.medicaobackend.model.Obra;
-import com.br.projetomedicao.medicaobackend.repository.ObraRepository;
-import com.br.projetomedicao.medicaobackend.service.GrupoService;
 import com.br.projetomedicao.medicaobackend.service.ObraService;
+import com.br.projetomedicao.medicaobackend.utils.HttpServletResponseUtil;
 
 @RestController
 @RequestMapping("/obras")
@@ -38,65 +33,52 @@ public class ObraResource {
 	@Autowired
 	private ObraService obraService;
 	
-	@Autowired
-	private GrupoService grupoService;
-
-	@Autowired
-	private ObraRepository obraRepository;
-	
-	@Autowired
-	private ApplicationEventPublisher publisher;
+	@GetMapping("/status/ativo")
+	@PreAuthorize("isAuthenticated()")
+	public List<Obra> listarObrasComStatusAtivoPorConstrutora(@RequestParam(required = true) Long idConstrutora) {
+		return obraService.listarObrasComStatusAtivoPorConstrutora(idConstrutora);
+	}
 	
 	@GetMapping
-	@PreAuthorize("isAuthenticated()")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_OBRA') and #oauth2.hasScope('read')")
 	public Page<Obra> pesquisar(@RequestParam(required = false) String nome, @RequestParam(required = false) Long idConstrutora, Pageable pageable) {		
-		return obraRepository.pesquisar(nome, idConstrutora, pageable);
+		return obraService.pesquisar(nome, idConstrutora, pageable);
 	}
 	
-	@PutMapping("/{id}/ativo")
+	@PutMapping("/{idObra}/ativo")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_OBRA') and #oauth2.hasScope('write')")
-	public void atualizarPropriedadeAtivo(@PathVariable Long id, @RequestBody Boolean ativo) {
-		obraService.atualizarPropriedadeAtivo(id, ativo);
+	public void atualizarPropriedadeAtivo(@PathVariable Long idObra, @RequestBody Boolean ativo) {
+		obraService.atualizarPropriedadeAtivo(idObra, ativo);
 	}
 	
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/{idObra}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@PreAuthorize("hasAuthority('ROLE_REMOVER_OBRA') and #oauth2.hasScope('write')")
-	public void remover(@PathVariable Long id) {
-		grupoService.removerGruposDeSistemaDaObra(id);
-		obraRepository.deleteById(id);
+	public void remover(@PathVariable Long idObra) {
+		obraService.remover(idObra);
 	}
 	
 	@PostMapping
 	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_OBRA') and #oauth2.hasScope('write')")
-	public ResponseEntity<Obra> criar(@Valid @RequestBody Obra obra, HttpServletResponse response) {
+	public ResponseEntity<Obra> salvar(@Valid @RequestBody Obra obra, HttpServletResponse response) {
 		Obra obraBD = obraService.salvar(obra);
-		grupoService.salvarGruposDeSistema(obra);
-		publisher.publishEvent(new RecursoCriadoEvent(this, response, obraBD.getId()));
+		HttpServletResponseUtil.adicionarHeaderLocation(response, obraBD.getId());
 		return ResponseEntity.status(HttpStatus.CREATED).body(obraBD);
 	}
 	
-	@GetMapping("/{id}")
+	@GetMapping("/{idObra}")
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_OBRA') and #oauth2.hasScope('read')")
-	public ResponseEntity<Obra> buscarPeloId(@PathVariable Long id) {
-		Optional<Obra> obra = obraRepository.findById(id);
-		return obra.isPresent() ? ResponseEntity.ok(obra.get()) : ResponseEntity.notFound().build();
-	}
-	
-	@PutMapping("/{id}")
-	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_OBRA') and #oauth2.hasScope('write')")
-	public ResponseEntity<Obra> atualizar(@PathVariable Long id, @Valid @RequestBody Obra obra) {
-		Obra obraBD = obraService.atualizar(id, obra);
+	public ResponseEntity<Obra> buscarPeloId(@PathVariable Long idObra) {
+		Obra obraBD = obraService.buscarObraPeloId(idObra);
 		return ResponseEntity.ok(obraBD);
 	}
 	
-	@GetMapping("/status/ativo")
-	@PreAuthorize("isAuthenticated()")
-	public List<Obra> listarStatusAtivoPorConstrutora(@RequestParam(required = true) Long idConstrutora) {
-		Construtora construtora = new Construtora();
-		construtora.setId(idConstrutora);
-		return obraRepository.findByAtivoAndConstrutora(true, construtora);
+	@PutMapping("/{idObra}")
+	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_OBRA') and #oauth2.hasScope('write')")
+	public ResponseEntity<Obra> atualizar(@PathVariable Long idObra, @Valid @RequestBody Obra obra) {
+		Obra obraBD = obraService.atualizar(idObra, obra);
+		return ResponseEntity.ok(obraBD);
 	}
 
 }

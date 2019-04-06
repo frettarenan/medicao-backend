@@ -16,11 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.br.projetomedicao.medicaobackend.model.Contrato;
-import com.br.projetomedicao.medicaobackend.model.Medicao;
 import com.br.projetomedicao.medicaobackend.model.Servico;
-import com.br.projetomedicao.medicaobackend.repository.MedicaoRepository;
-import com.br.projetomedicao.medicaobackend.repository.ServicoRepository;
 import com.br.projetomedicao.medicaobackend.service.ServicoService;
 
 @RestController
@@ -28,33 +24,24 @@ import com.br.projetomedicao.medicaobackend.service.ServicoService;
 public class ServicoResource {
 
 	@Autowired
-	private ServicoRepository servicoRepository;
-	
-	@Autowired
-	private MedicaoRepository medicaoRepository;
-	
-	@Autowired
 	private ServicoService servicoService;
 	
 	@GetMapping("/contrato/{idContrato}")
-	@PreAuthorize("isAuthenticated()")
-	public List<Servico> listarTodosPorContrato(@PathVariable Long idContrato) {
-		Contrato contrato = new Contrato();
-		contrato.setId(idContrato);
-		return servicoRepository.findByContratoOrderByOrdemAsc(contrato);
+	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_CONTRATO') and #oauth2.hasScope('write')")
+	public List<Servico> listarServicosPorContrato(@PathVariable Long idContrato) {
+		return servicoService.listarServicosPorContrato(idContrato);
 	}
 	
 	@GetMapping("/medicao/{idMedicao}")
-	@PreAuthorize("isAuthenticated()")
+	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_MEDICAO') and #oauth2.hasScope('write')")
 	public List<Servico> listarServicosPorMedicao(@PathVariable Long idMedicao) {
-		Medicao medicao = medicaoRepository.findById(idMedicao).get();
-		return servicoRepository.findByContratoOrderByOrdemAsc(medicao.getContrato());
+		return servicoService.listarServicosPorMedicao(idMedicao);
 	}
 	
 	@PostMapping("/cadastro-rapido")
 	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_SERVICO') and #oauth2.hasScope('write')")
-	public ResponseEntity<List<Servico>> criarServicos(@Valid @RequestBody List<Servico> servicos, HttpServletResponse response) {
-		List<Servico> servicosBD = servicoService.salvarNovosServicos(servicos);
+	public ResponseEntity<List<Servico>> salvarCadastroRapido(@Valid @RequestBody List<Servico> servicos, HttpServletResponse response) {
+		List<Servico> servicosBD = servicoService.salvarCadastroRapido(servicos);
 		return ResponseEntity.status(HttpStatus.CREATED).body(servicosBD);
 	}
 	
@@ -62,7 +49,7 @@ public class ServicoResource {
 	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_SERVICO') and #oauth2.hasScope('write')")
 	public ResponseEntity<List<Servico>> salvarOrdenacao(@Valid @RequestBody List<Servico> servicos, HttpServletResponse response) {
 		List<Servico> servicosBD = servicoService.salvarOrdenacao(servicos);
-		return ResponseEntity.status(HttpStatus.CREATED).body(servicosBD);
+		return ResponseEntity.ok(servicosBD);
 	}
 
 }

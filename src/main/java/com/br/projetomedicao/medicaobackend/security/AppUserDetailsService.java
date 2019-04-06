@@ -2,7 +2,6 @@ package com.br.projetomedicao.medicaobackend.security;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,18 +13,17 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.br.projetomedicao.medicaobackend.model.Usuario;
-import com.br.projetomedicao.medicaobackend.repository.UsuarioRepository;
+import com.br.projetomedicao.medicaobackend.service.UsuarioService;
 
 @Service
 public class AppUserDetailsService implements UserDetailsService {
 
 	@Autowired
-	private UsuarioRepository usuarioRepository;
+	private UsuarioService usuarioService;
 	
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		Optional<Usuario> usuarioOptional = usuarioRepository.findByEmail(email);
-		Usuario usuario = usuarioOptional.orElseThrow(() -> new UsernameNotFoundException("Usuário inexistente ou senha inválida"));
+		Usuario usuario = usuarioService.login(email);
 		return new UsuarioSistema(usuario, getPermissoes(usuario));
 	}
 

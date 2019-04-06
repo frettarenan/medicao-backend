@@ -1,13 +1,11 @@
 package com.br.projetomedicao.medicaobackend.resource;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -24,70 +22,63 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.br.projetomedicao.medicaobackend.event.RecursoCriadoEvent;
 import com.br.projetomedicao.medicaobackend.model.Construtora;
-import com.br.projetomedicao.medicaobackend.repository.ConstrutoraRepository;
 import com.br.projetomedicao.medicaobackend.service.ConstrutoraService;
+import com.br.projetomedicao.medicaobackend.utils.HttpServletResponseUtil;
 
 @RestController
 @RequestMapping("/construtoras")
 public class ConstrutoraResource {
 
 	@Autowired
-	private ConstrutoraRepository construtoraRepository;
-	
-	@Autowired
 	private ConstrutoraService construtoraService;
 	
-	@Autowired
-	private ApplicationEventPublisher publisher;
+	@GetMapping("/status/ativo")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_CONSTRUTORA') and #oauth2.hasScope('read')")
+	public List<Construtora> listarConstrutorasComStatusAtivo() {
+		return construtoraService.listarConstrutorasComStatusAtivo();
+	}
 	
 	@GetMapping
-	@PreAuthorize("isAuthenticated()")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_CONSTRUTORA') and #oauth2.hasScope('read')")
 	public Page<Construtora> pesquisar(@RequestParam(required = false, defaultValue = "%") String razaoSocial, Pageable pageable) {
-		return construtoraRepository.findByRazaoSocialContaining(razaoSocial, pageable);
+		return construtoraService.pesquisar(razaoSocial, pageable);
 	}
 	
-	@PutMapping("/{id}/ativo")
+	@PutMapping("/{idConstrutora}/ativo")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_CONSTRUTORA') and #oauth2.hasScope('write')")
-	public void atualizarPropriedadeAtivo(@PathVariable Long id, @RequestBody Boolean ativo) {
-		construtoraService.atualizarPropriedadeAtivo(id, ativo);
+	public void atualizarPropriedadeAtivo(@PathVariable Long idConstrutora, @RequestBody Boolean ativo) {
+		construtoraService.atualizarPropriedadeAtivo(idConstrutora, ativo);
 	}
 	
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/{idConstrutora}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@PreAuthorize("hasAuthority('ROLE_REMOVER_CONSTRUTORA') and #oauth2.hasScope('write')")
-	public void remover(@PathVariable Long id) {
-		construtoraRepository.deleteById(id);
+	public void remover(@PathVariable Long idConstrutora) {
+		construtoraService.remover(idConstrutora);
 	}
 	
 	@PostMapping
 	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_CONSTRUTORA') and #oauth2.hasScope('write')")
-	public ResponseEntity<Construtora> criar(@Valid @RequestBody Construtora construtora, HttpServletResponse response) {
+	public ResponseEntity<Construtora> salvar(@Valid @RequestBody Construtora construtora, HttpServletResponse response) {
 		Construtora construtoraBD = construtoraService.salvar(construtora);
-		publisher.publishEvent(new RecursoCriadoEvent(this, response, construtoraBD.getId()));
+		HttpServletResponseUtil.adicionarHeaderLocation(response, construtoraBD.getId());
 		return ResponseEntity.status(HttpStatus.CREATED).body(construtoraBD);
 	}
 	
-	@GetMapping("/{id}")
+	@GetMapping("/{idConstrutora}")
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_CONSTRUTORA') and #oauth2.hasScope('read')")
-	public ResponseEntity<Construtora> buscarPeloId(@PathVariable Long id) {
-		Optional<Construtora> construtora = construtoraRepository.findById(id);
-		return construtora.isPresent() ? ResponseEntity.ok(construtora.get()) : ResponseEntity.notFound().build();
-	}
-	
-	@PutMapping("/{id}")
-	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_CONSTRUTORA') and #oauth2.hasScope('write')")
-	public ResponseEntity<Construtora> atualizar(@PathVariable Long id, @Valid @RequestBody Construtora construtora) {
-		Construtora construtoraBD = construtoraService.atualizar(id, construtora);
+	public ResponseEntity<Construtora> buscarConstrutoraPeloId(@PathVariable Long idConstrutora) {
+		Construtora construtoraBD = construtoraService.buscarConstrutoraPeloId(idConstrutora);
 		return ResponseEntity.ok(construtoraBD);
 	}
 	
-	@GetMapping("/status/ativo")
-	@PreAuthorize("isAuthenticated()")
-	public List<Construtora> listarStatusAtivo() {
-		return construtoraRepository.findByAtivo(true);
+	@PutMapping("/{idConstrutora}")
+	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_CONSTRUTORA') and #oauth2.hasScope('write')")
+	public ResponseEntity<Construtora> atualizar(@PathVariable Long idConstrutora, @Valid @RequestBody Construtora construtora) {
+		Construtora construtoraBD = construtoraService.atualizar(idConstrutora, construtora);
+		return ResponseEntity.ok(construtoraBD);
 	}
-
+	
 }

@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.br.projetomedicao.medicaobackend.model.Lancamento;
-import com.br.projetomedicao.medicaobackend.model.Medicao;
-import com.br.projetomedicao.medicaobackend.repository.LancamentoRepository;
 import com.br.projetomedicao.medicaobackend.service.LancamentoService;
 
 @RestController
@@ -26,23 +24,18 @@ import com.br.projetomedicao.medicaobackend.service.LancamentoService;
 public class LancamentoResource {
 
 	@Autowired
-	private LancamentoRepository lancamentoRepository;
-	
-	@Autowired
 	private LancamentoService lancamentoService;
 	
 	@GetMapping
-	@PreAuthorize("isAuthenticated()")
+	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_MEDICAO') and #oauth2.hasScope('write')")
 	public List<Lancamento> listarLancamentosPorMedicao(@RequestParam(required = true) Long idMedicao) {
-		Medicao medicao = new Medicao();
-		medicao.setId(idMedicao);
-		return lancamentoRepository.findByMedicao(medicao);
+		return lancamentoService.listarLancamentosPorMedicao(idMedicao);
 	}
 	
 	@PostMapping
 	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_MEDICAO') and #oauth2.hasScope('write')")
-	public ResponseEntity<List<Lancamento>> criar(@Valid @RequestBody List<Lancamento> lancamentos, HttpServletResponse response) {
-		List<Lancamento> lancamentosBD = lancamentoService.salvar(lancamentos);
+	public ResponseEntity<List<Lancamento>> salvarTodos(@Valid @RequestBody List<Lancamento> lancamentos, HttpServletResponse response) {
+		List<Lancamento> lancamentosBD = lancamentoService.salvarTodos(lancamentos);
 		return ResponseEntity.status(HttpStatus.CREATED).body(lancamentosBD);
 	}
 
