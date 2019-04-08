@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.br.projetomedicao.medicaobackend.model.Construtora;
 import com.br.projetomedicao.medicaobackend.model.Obra;
+import com.br.projetomedicao.medicaobackend.model.Usuario;
 import com.br.projetomedicao.medicaobackend.repository.ObraRepository;
 
 @Service
@@ -25,6 +26,9 @@ public class ObraService {
 	
 	@Autowired
 	private GrupoService grupoService;
+	
+	@Autowired
+	private UsuarioService usuarioService;
 	
 	@Autowired
 	private SegurancaService segurancaService;
@@ -60,8 +64,8 @@ public class ObraService {
 	}
 	
 	public Obra salvar(Obra obra) {
-		Construtora construtoraBD = construtoraService.buscarConstrutoraPeloId(obra.getConstrutora().getId());
-		obra.setConstrutora(construtoraBD);
+		validaPermissaoAcessoDoUsuarioResponsavelDaObra(obra);
+		
 		Obra obraBD = obraRepository.save(obra);
 		grupoService.salvarGruposDeSistema(obraBD);
 		return obraBD;
@@ -69,8 +73,18 @@ public class ObraService {
 
 	public Obra atualizar(Long id, Obra obra) {
 		Obra obraBD = buscarObraPeloId(id);
+		validaPermissaoAcessoDoUsuarioResponsavelDaObra(obra);
+		
 		BeanUtils.copyProperties(obra, obraBD, "id");
 		return obraRepository.save(obraBD);
+	}
+
+	private void validaPermissaoAcessoDoUsuarioResponsavelDaObra(Obra obra) {
+		Construtora construtoraBD = construtoraService.buscarConstrutoraPeloId(obra.getConstrutora().getId());
+		Usuario usuarioResponsavelBD = usuarioService.buscarUsuarioPeloId(obra.getUsuarioResponsavel().getId());
+		segurancaService.validaPermissaoAcessoDaConstrutoraDoUsuario(construtoraBD, usuarioResponsavelBD);
+		obra.setConstrutora(construtoraBD);
+		obra.setUsuarioResponsavel(usuarioResponsavelBD);
 	}
 
 }
