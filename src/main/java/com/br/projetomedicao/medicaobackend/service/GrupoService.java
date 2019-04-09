@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,9 @@ public class GrupoService {
 
 	@Autowired
 	private MedicaoService medicaoService;
+	
+	@Autowired
+	private SegurancaService segurancaService;
 
 	public List<Grupo> listarGruposPorObra(Long idObra) {
 		Obra obraBD = obraService.buscarObraPeloId(idObra);
@@ -137,6 +141,19 @@ public class GrupoService {
 		tipoGrupo.setId(TipoGrupoEnum.SUBTOTAL.getId());
 		grupos = grupoRepository.findByObraAndTipoGrupo(obra, tipoGrupo);
 		grupoRepository.deleteAll(grupos);
+	}
+
+	public Grupo buscarServicoPeloId(Long idGrupo) {
+		Optional<Grupo> grupoBD = grupoRepository.findById(idGrupo);
+		if (!grupoBD.isPresent())
+			throw new EmptyResultDataAccessException(1);
+		segurancaService.validaPermissaoAcessoPorConstrutora(grupoBD.get().getObra().getConstrutora().getId());
+		return grupoBD.get();
+	}
+	
+	public void remover(Long idGrupo) {
+		Grupo grupoBD = buscarServicoPeloId(idGrupo);
+		grupoRepository.delete(grupoBD);
 	}
 
 }
