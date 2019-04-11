@@ -105,5 +105,12 @@ public class ServicoService {
 		Servico servicoBD = buscarServicoPeloId(idServico);
 		servicoRepository.delete(servicoBD);
 	}
+	
+	public Servico atualizar(Long idServico, Servico servico) {
+		Servico servicoBD = buscarServicoPeloId(idServico);
+		servicoBD.setNome(servico.getNome());
+		servicoBD.setUnidadeMedida(servico.getUnidadeMedida());
+		return servicoRepository.save(servicoBD);
+	}
 
 }
