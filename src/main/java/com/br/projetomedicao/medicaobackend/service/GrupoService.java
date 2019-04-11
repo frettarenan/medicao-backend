@@ -143,7 +143,7 @@ public class GrupoService {
 		grupoRepository.deleteAll(grupos);
 	}
 
-	public Grupo buscarServicoPeloId(Long idGrupo) {
+	public Grupo buscarGrupoPeloId(Long idGrupo) {
 		Optional<Grupo> grupoBD = grupoRepository.findById(idGrupo);
 		if (!grupoBD.isPresent())
 			throw new EmptyResultDataAccessException(1);
@@ -152,8 +152,14 @@ public class GrupoService {
 	}
 	
 	public void remover(Long idGrupo) {
-		Grupo grupoBD = buscarServicoPeloId(idGrupo);
+		Grupo grupoBD = buscarGrupoPeloId(idGrupo);
 		grupoRepository.delete(grupoBD);
+	}
+
+	public Grupo atualizar(Long idGrupo, Grupo grupo) {
+		Grupo grupoBD = buscarGrupoPeloId(idGrupo);
+		grupoBD.setNome(grupo.getNome());
+		return grupoRepository.save(grupoBD);
 	}
 
 }

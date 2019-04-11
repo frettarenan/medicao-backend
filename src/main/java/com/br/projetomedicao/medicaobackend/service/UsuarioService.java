@@ -73,8 +73,8 @@ public class UsuarioService {
 		return usuarioRepository.save(usuario);
 	}
 
-	public Usuario atualizar(Long id, Usuario usuario) {
-		Usuario usuarioBD = buscarUsuarioPeloId(id);
+	public Usuario atualizar(Long idUsuario, Usuario usuario) {
+		Usuario usuarioBD = buscarUsuarioPeloId(idUsuario);
 		BeanUtils.copyProperties(usuario, usuarioBD, "id");
 		return usuarioRepository.save(usuarioBD);
 	}

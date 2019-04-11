@@ -56,8 +56,8 @@ public class ConstrutoraService {
 		return construtoraRepository.save(construtora);
 	}
 	
-	public Construtora atualizar(Long id, Construtora construtora) {
-		Construtora construtoraBD = buscarConstrutoraPeloId(id);
+	public Construtora atualizar(Long idConstrutora, Construtora construtora) {
+		Construtora construtoraBD = buscarConstrutoraPeloId(idConstrutora);
 		BeanUtils.copyProperties(construtora, construtoraBD, "id");
 		return construtoraRepository.save(construtoraBD);
 	}

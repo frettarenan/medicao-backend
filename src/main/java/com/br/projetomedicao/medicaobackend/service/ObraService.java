@@ -71,8 +71,8 @@ public class ObraService {
 		return obraBD;
 	}
 
-	public Obra atualizar(Long id, Obra obra) {
-		Obra obraBD = buscarObraPeloId(id);
+	public Obra atualizar(Long idObra, Obra obra) {
+		Obra obraBD = buscarObraPeloId(idObra);
 		validaPermissaoAcessoDoUsuarioResponsavelDaObra(obra);
 		
 		BeanUtils.copyProperties(obra, obraBD, "id");
