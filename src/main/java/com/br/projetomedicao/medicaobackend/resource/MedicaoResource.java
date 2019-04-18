@@ -6,7 +6,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -63,6 +65,13 @@ public class MedicaoResource {
 	public ResponseEntity<Medicao> renomear(@PathVariable Long idMedicao, @Valid @RequestBody String nome) {
 		Medicao medicaoBD = medicaoService.renomear(idMedicao, nome);
 		return ResponseEntity.ok(medicaoBD);
+	}
+	
+	@GetMapping("/{idMedicao}/relatorio")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_MEDICAO') and #oauth2.hasScope('read')")
+	public ResponseEntity<byte[]> relatorioMedicao(@PathVariable Long idMedicao) throws Exception {
+		byte[] relatorio = medicaoService.relatorioMedicao(idMedicao);
+		return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_PDF_VALUE).body(relatorio);
 	}
 
 }

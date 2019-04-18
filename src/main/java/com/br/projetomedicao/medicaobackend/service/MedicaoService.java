@@ -1,6 +1,10 @@
 package com.br.projetomedicao.medicaobackend.service;
 
+import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 
 import org.apache.commons.lang3.SerializationUtils;
@@ -11,6 +15,12 @@ import org.springframework.stereotype.Service;
 import com.br.projetomedicao.medicaobackend.model.Contrato;
 import com.br.projetomedicao.medicaobackend.model.Medicao;
 import com.br.projetomedicao.medicaobackend.repository.MedicaoRepository;
+
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 @Service
 public class MedicaoService {
@@ -62,6 +72,18 @@ public class MedicaoService {
 		Medicao medicaoBD = buscarMedicaoPeloId(idMedicao);
 		medicaoBD.setNome(nome);
 		return medicaoRepository.save(medicaoBD);
+	}
+
+	public byte[] relatorioMedicao(Long idMedicao) throws JRException {
+		// List<LancamentoEstatisticaPessoa> dados = lancamentoRepository.porPessoa(inicio, fim);
+		List<?> dados = null;
+		
+		Map<String, Object> parametros = new HashMap<>();
+		parametros.put("REPORT_LOCALE", new Locale("pt", "BR"));
+		
+		InputStream inputStream = this.getClass().getResourceAsStream("/relatorios/relatorio-medicao.jasper");
+		JasperPrint jasperPrint = JasperFillManager.fillReport(inputStream, parametros, new JRBeanCollectionDataSource(dados));
+		return JasperExportManager.exportReportToPdf(jasperPrint);
 	}
 	
 }
