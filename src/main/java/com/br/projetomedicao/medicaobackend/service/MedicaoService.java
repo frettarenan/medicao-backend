@@ -1,6 +1,7 @@
 package com.br.projetomedicao.medicaobackend.service;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -12,8 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import com.br.projetomedicao.medicaobackend.dto.RelatorioMedicaoDTO;
 import com.br.projetomedicao.medicaobackend.model.Contrato;
 import com.br.projetomedicao.medicaobackend.model.Medicao;
+import com.br.projetomedicao.medicaobackend.model.Servico;
 import com.br.projetomedicao.medicaobackend.repository.MedicaoRepository;
 
 import net.sf.jasperreports.engine.JRException;
@@ -75,8 +78,17 @@ public class MedicaoService {
 	}
 
 	public byte[] relatorioMedicao(Long idMedicao) throws JRException {
-		// List<LancamentoEstatisticaPessoa> dados = lancamentoRepository.porPessoa(inicio, fim);
-		List<?> dados = null;
+		List<RelatorioMedicaoDTO> dados = new ArrayList<RelatorioMedicaoDTO>();
+		
+		RelatorioMedicaoDTO dto = new RelatorioMedicaoDTO();
+		dto.setServico(new Servico());
+		dto.getServico().setNome("MO Contrapiso");
+		dados.add(dto);
+		
+		dto = new RelatorioMedicaoDTO();
+		dto.setServico(new Servico());
+		dto.getServico().setNome("MO Contrapiso");
+		dados.add(dto);
 		
 		Map<String, Object> parametros = new HashMap<>();
 		parametros.put("REPORT_LOCALE", new Locale("pt", "BR"));
