@@ -319,14 +319,14 @@
 	<pageFooter>
 		<band height="14" splitType="Stretch">
 			<textField isStretchWithOverflow="true">
-				<reportElement x="0" y="0" width="160" height="14" uuid="51868060-3978-478a-be3c-c7f2b21939fb">
+				<reportElement x="0" y="0" width="260" height="14" uuid="51868060-3978-478a-be3c-c7f2b21939fb">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[msg("Emitido em {0} às {1}", DATEFORMAT(TODAY(), "dd/MM/yyyy"), DATEFORMAT(TODAY(), "HH:mm:ss"))]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" evaluationTime="Master">
-				<reportElement x="660" y="0" width="100" height="14" uuid="ab1c2327-7749-4f1c-9322-86b1698276ca">
+				<reportElement x="560" y="0" width="200" height="14" uuid="ab1c2327-7749-4f1c-9322-86b1698276ca">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
